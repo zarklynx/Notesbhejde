@@ -8,7 +8,7 @@ import {
   FaBell, FaUserCircle, FaChevronDown, FaPaperPlane,
   FaStar, FaRegBookmark, FaRegHeart, FaRegComment,
 } from "react-icons/fa";
-import BannerImg from "./assets/bannerNoteApp.png";
+import BannerImg from "./assets/BannerNoteApp.png";
 
 const categories = [
   ["All Notes", 124],

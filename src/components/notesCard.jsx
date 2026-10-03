@@ -4,6 +4,7 @@ import {
   FaStar, FaRegBookmark, FaRegHeart, FaRegComment, FaDownload,
 } from "react-icons/fa";
 import "./NotesCss.css";
+import MasterjiChat from './masterji/MasterjiChat'
 
 function NoteView({ note, onClose }) {
   const tags = note.tags || [];
@@ -127,6 +128,7 @@ function NoteView({ note, onClose }) {
         </div>
 
       </div>
+      <MasterjiChat key={note.id} note={note} />
     </div>,
     document.body
   );

@@ -1,6 +1,12 @@
 import seed from "./notes.json"; // path: src/notes.json
+import testNotes from './masterjiTestNotes.json';
 
 const KEY = "notesbhejde_notes";
+const bundledFiles = import.meta.glob('./assets/notes/*', { eager: true, query: '?url', import: 'default' });
+function resolveFiles(notes) {
+  const resolve = (url) => url?.startsWith('/notes/') ? bundledFiles[`./assets${url}`] || url : url;
+  return notes.map(note => ({ ...note, file: resolve(note.file), images: (note.images || []).map(resolve) }));
+}
 
 // Whoever is logged in. Change this once you have real login.
 export const CURRENT_USER = "Vivek";
@@ -8,11 +14,31 @@ export const CURRENT_USER = "Vivek";
 export function getNotes() {
   try {
     const saved = localStorage.getItem(KEY);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const notes = JSON.parse(saved);
+      if (!localStorage.getItem('masterji-mca-notes-v2')) {
+        const demoIds = new Set(testNotes.map(note => note.id));
+        const updated = [...testNotes, ...notes.filter(note => !demoIds.has(note.id))];
+        localStorage.setItem(KEY, JSON.stringify(updated));
+        localStorage.setItem('masterji-mca-notes-v2', 'added');
+        localStorage.setItem('masterji-test-notes-v1', 'added');
+        return resolveFiles(updated);
+      }
+      // One-time seed migration preserves uploads and later deletions of demo notes.
+      if (!localStorage.getItem('masterji-test-notes-v1')) {
+        const merged = [...testNotes.filter(note => !notes.some(n => n.id === note.id)), ...notes];
+        localStorage.setItem(KEY, JSON.stringify(merged));
+        localStorage.setItem('masterji-test-notes-v1', 'added');
+        return resolveFiles(merged);
+      }
+      return resolveFiles(notes);
+    }
+    localStorage.setItem('masterji-test-notes-v1', 'added');
+    localStorage.setItem('masterji-mca-notes-v2', 'added');
   } catch {
     /* ignore and fall back to the JSON */
   }
-  return seed;
+  return resolveFiles([...testNotes, ...seed]);
 }
 
 function save(notes) {

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Mynotes.css";
+import "./mynotes.css";
 
 const formatDate = (iso) =>
   new Date(iso).toLocaleDateString("en-GB", {
