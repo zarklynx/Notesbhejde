@@ -25,8 +25,19 @@ function NoteView({ note, onClose }) {
       return;
     }
     if (!note.file.startsWith("data:")) {
-      setViewerSrc(note.file);
-      return;
+      let stale = false;
+      fetch(note.file, { method: "HEAD" })
+        .then((r) => {
+          if (stale) return;
+          const type = r.headers.get("content-type") || "";
+          setViewerSrc(r.ok && type.includes("pdf") ? note.file : "missing");
+        })
+        .catch(() => {
+          if (!stale) setViewerSrc("missing");
+        });
+      return () => {
+        stale = true;
+      };
     }
     let url;
     let cancelled = false;
@@ -93,8 +104,12 @@ function NoteView({ note, onClose }) {
             </figure>
           ))}
 
-          {isPdf && viewerSrc && (
+          {isPdf && viewerSrc && viewerSrc !== "missing" && (
             <iframe className="nv-viewer" src={viewerSrc} title={note.topic} />
+          )}
+
+          {isPdf && viewerSrc === "missing" && (
+            <p className="nv-nopreview">This file could not be found on the server.</p>
           )}
 
           {note.file && !isPdf && (
