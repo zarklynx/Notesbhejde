@@ -1,61 +1,33 @@
-
-import React, { useState } from "react";
+import React from "react";
 import "./Mynotes.css";
 
-function MyNotes({ onClose }) {
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "DBMS Notes",
-      subject: "Database Management System",
-      description:
-        "Important DBMS concepts, SQL queries and normalization.",
-      tags: ["DBMS", "SQL", "Database"],
-      file: "dbms-notes.pdf",
-      createdAt: "03 Oct 2026",
-    },
-    {
-      id: 2,
-      title: "Java Programming",
-      subject: "Java",
-      description:
-        "Java OOP concepts and important programming examples.",
-      tags: ["Java", "OOP"],
-      file: "java-notes.pdf",
-      createdAt: "02 Oct 2026",
-    },
-  ]);
+const formatDate = (iso) =>
+  new Date(iso).toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
 
+function MyNotes({ notes, onDelete, onView, onClose }) {
   const handleDelete = (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this note?"
-    );
-
-    if (confirmDelete) {
-      setNotes((prevNotes) =>
-        prevNotes.filter((note) => note.id !== id)
-      );
+    if (window.confirm("Are you sure you want to delete this note?")) {
+      onDelete(id);
     }
   };
 
   return (
     <div className="my-notes-overlay">
-
       <div className="my-notes-modal">
 
         {/* HEADER */}
         <div className="my-notes-header">
-
           <div>
-            <h1>My ss Notes</h1>
+            <h1>My Notes</h1>
             <p>Notes you have created and uploaded.</p>
           </div>
 
           <div className="header-right">
-
-            <span className="notes-count">
-              {notes.length} Notes
-            </span>
+            <span className="notes-count">{notes.length} Notes</span>
 
             <button
               className="close-notes"
@@ -64,106 +36,66 @@ function MyNotes({ onClose }) {
             >
               ✕
             </button>
-
           </div>
-
         </div>
 
-
         {/* NOTES */}
-
         {notes.length === 0 ? (
-
           <div className="no-notes">
             <div className="empty-icon">📄</div>
-
             <h2>No Notes Found</h2>
-
-            <p>
-              You haven't created any notes yet.
-            </p>
+            <p>You haven't created any notes yet.</p>
           </div>
-
         ) : (
-
           <div className="notes-grid">
-
             {notes.map((note) => (
-
               <div className="note-card" key={note.id}>
 
                 <div className="note-card-top">
-
-                  <div className="file-icon">
-                    📄
-                  </div>
+                  <div className="file-icon">📄</div>
 
                   <button
                     className="delete-btn"
                     onClick={() => handleDelete(note.id)}
+                    aria-label="Delete note"
                   >
                     🗑
                   </button>
-
                 </div>
 
-
-                <h2>{note.title}</h2>
-
-                <p className="note-subject">
-                  {note.subject}
-                </p>
-
-                <p className="note-description">
-                  {note.description}
-                </p>
-
+                <h2>{note.topic}</h2>
+                <p className="note-subject">{note.subject}</p>
+                <p className="note-description">{note.info}</p>
 
                 <div className="note-tags">
-
-                  {note.tags.map((tag, index) => (
-                    <span key={index}>
-                      #{tag}
-                    </span>
+                  {(note.tags || []).map((tag) => (
+                    <span key={tag}>#{tag}</span>
                   ))}
-
                 </div>
 
-
-                <div className="note-file">
-
-                  <span>📎</span>
-
-                  <span>{note.file}</span>
-
-                </div>
-
+                {note.file && (
+                  <div className="note-file">
+                    <span>📎</span>
+                    <span>{note.fileName || note.file.split("/").pop()}</span>
+                  </div>
+                )}
 
                 <div className="note-footer">
+                  <span>Created: {formatDate(note.createdAt)}</span>
 
-                  <span>
-                    Created: {note.createdAt}
-                  </span>
-
-                  <button className="view-btn">
+                  <button className="view-btn" onClick={() => onView(note)}>
                     View
                   </button>
-
                 </div>
 
               </div>
-
             ))}
-
           </div>
-
         )}
 
       </div>
-
     </div>
   );
 }
 
 export default MyNotes;
-

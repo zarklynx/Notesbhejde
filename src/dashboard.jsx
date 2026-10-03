@@ -2,6 +2,8 @@ import { useState } from "react";
 import "./dash.css";
 import AddNotes from "./components/addnotes";
 import MyNotes from "./components/Mynotes";
+import NoteView from "./components/notesCard";
+import { getNotes, deleteNote, CURRENT_USER } from "./api";
 import {
   FaBell, FaUserCircle, FaChevronDown, FaPaperPlane,
   FaStar, FaRegBookmark, FaRegHeart, FaRegComment,
@@ -20,25 +22,39 @@ const categories = [
   ["Other", 5],
 ];
 
-const notes = [
-  { name: "Rohit Sharma", topic: "AWS Cloud Practitioner", info: "A quick summary of core AWS services, IAM, EC2 and S3 for beginners.", tags: ["AWS", "Cloud", "DevOps"], review: 4.8, saved: 42, fav: 58, comment: 7 },
-  { name: "Sneha Patil", topic: "Git Basics for Beginners", info: "Simple explanation of Git commands with real world examples.", tags: ["Git", "Version Control"], review: 4.6, saved: 35, fav: 58, comment: 12 },
-  { name: "Aditya Kulkarni", topic: "MERN Expense Tracker", info: "Expense tracker built with the MERN stack and deployed on AWS.", tags: ["MERN", "AWS", "Project"], review: 4.9, saved: 95, fav: 76, comment: 23 },
-  { name: "Pooja Singh", topic: "Linux Commands Cheat Sheet", info: "Useful Linux commands with examples for quick revision.", tags: ["Linux", "Cheat Sheet"], review: 4.7, saved: 76, fav: 64, comment: 18 },
-];
-
-
 function Dashboard() {
+  const [notes, setNotes] = useState(() => getNotes());
   const [catOpen, setCatOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("All Notes");
   const [unread] = useState(3);
   const [search, setSearch] = useState("");
-  const query = search.trim().toLowerCase();
   const [showAdd, setShowAdd] = useState(false);
   const [showMyNotes, setShowMyNotes] = useState(false);
+  const [selected, setSelected] = useState(null);
+
+  const query = search.trim().toLowerCase();
 
   const filteredNotes = notes.filter((n) =>
-    [n.topic, n.name, n.info, ...n.tags].join(" ").toLowerCase().includes(query));
+    [n.topic, n.name, n.info, ...n.tags].join(" ").toLowerCase().includes(query)
+  );
+
+  // only the notes owned by the logged in user
+  const myNotes = notes.filter((n) => n.owner === CURRENT_USER);
+
+  const addNote = (note) => {
+    setNotes((prev) => [note, ...prev]); // new note goes first
+    setShowAdd(false);
+  };
+
+  const handleDelete = (id) => {
+    deleteNote(id);
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+  };
+
+  const handleViewFromMyNotes = (note) => {
+    setShowMyNotes(false);
+    setSelected(note);
+  };
 
   return (
     <div className="dash">
@@ -46,10 +62,11 @@ function Dashboard() {
       <div className="navbar">
         <div className="symbol">NotesBhejde</div>
         <div className="searchbox">
-          <input type="text" placeholder="subject/topic/user...." 
+          <input
+            type="text"
+            placeholder="subject/topic/user...."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-
           />
         </div>
         <div className="signButtons">
@@ -71,7 +88,8 @@ function Dashboard() {
       <div className="leftSidebar">
         <div className="Section1">
           <ul>
-            <li onClick={() => setShowMyNotes(true)}>My Notes</li>            <li onClick={() => setShowAdd(true)}>Add Notes</li>
+            <li onClick={() => setShowMyNotes(true)}>My Notes</li>
+            <li onClick={() => setShowAdd(true)}>Add Notes</li>
             <li>Saved</li>
             <li>Favourites</li>
             <li>Recent</li>
@@ -116,36 +134,37 @@ function Dashboard() {
         </div>
 
         <div className="NotesBAr">
-        <div className="grid">
-  {filteredNotes.length === 0 && (
-    <p className="noResults">No notes found for "{search}"</p>
-  )}
+          <div className="grid">
+            {filteredNotes.length === 0 && (
+              <p className="noResults">No notes found for "{search}"</p>
+            )}
 
-  {filteredNotes.map((n) => (
-    <div className="card" key={n.topic}>
-      <div className="part1">
-        <div className="userRow">
-          <span className="userProfile">{n.name[0]}</span>
-          <p className="username">{n.name}</p>
-        </div>
-        <h3 className="topic">{n.topic}</h3>
-        <p className="info">{n.info}</p>
-        <div className="tags">
-          {n.tags.map((t) => (
-            <span className="tag" key={t}>{t}</span>
-          ))}
-        </div>
-      </div>
+            {filteredNotes.map((n) => (
+              <div className="card" key={n.id} onClick={() => setSelected(n)}>
+                <div className="part1">
+                  <div className="userRow">
+                    <span className="userProfile">{n.name[0]}</span>
+                    <p className="username">{n.name}</p>
+                  </div>
+                  <h3 className="topic">{n.topic}</h3>
+                  <p className="info">{n.info}</p>
+                  <div className="tags">
+                    {n.tags.map((t) => (
+                      <span className="tag" key={t}>{t}</span>
+                    ))}
+                  </div>
+                  <span className="showNotes">Show notes →</span>
+                </div>
 
-      <div className="part2">
-        <button className="action rating" aria-label="Review"><FaStar /> {n.review}</button>
-        <button className="action" aria-label="Saved"><FaRegBookmark /> {n.saved}</button>
-        <button className="action" aria-label="Favourite"><FaRegHeart /> {n.fav}</button>
-        <button className="action" aria-label="Comments"><FaRegComment /> {n.comment}</button>
-      </div>
-    </div>
-  ))}
-</div>
+                <div className="part2" onClick={(e) => e.stopPropagation()}>
+                  <button className="action rating" aria-label="Review"><FaStar /> {n.review}</button>
+                  <button className="action" aria-label="Saved"><FaRegBookmark /> {n.saved}</button>
+                  <button className="action" aria-label="Favourite"><FaRegHeart /> {n.fav}</button>
+                  <button className="action" aria-label="Comments"><FaRegComment /> {n.comment}</button>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -186,13 +205,25 @@ function Dashboard() {
           </div>
         </div>
       </footer>
-      {showAdd && (
-  <AddNotes onClose={() => setShowAdd(false)} />
-)}
 
-{showMyNotes && (
-  <MyNotes onClose={() => setShowMyNotes(false)} />
-)}   
+      {/* popups */}
+      {showAdd && (
+        <AddNotes onClose={() => setShowAdd(false)} onAdd={addNote} />
+      )}
+
+      {showMyNotes && (
+        <MyNotes
+          notes={myNotes}
+          onDelete={handleDelete}
+          onView={handleViewFromMyNotes}
+          onClose={() => setShowMyNotes(false)}
+        />
+      )}
+
+      {selected && (
+        <NoteView note={selected} onClose={() => setSelected(null)} />
+      )}
+
     </div>
   );
 }

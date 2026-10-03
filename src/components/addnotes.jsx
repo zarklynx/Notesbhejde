@@ -1,218 +1,142 @@
-import React, { useState } from "react";
-import "./AddNotesCss.css"
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
+import { createNote } from "../api";
+import "./AddNotesCss.css";
 
-function AddNotes({onClose}) {
-  const [formData, setFormData] = useState({
-    title: "",
-    subject: "",
-    description: "",
-    tags: "",
-    file: null,
-  });
+function AddNotes({ onClose, onAdd }) {
+  const fileRef = useRef(null);
+  const [title, setTitle] = useState("");
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
+  const [tags, setTags] = useState("");
+  const [file, setFile] = useState(null);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  // close with the Esc key
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  const handleFileChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      file: e.target.files[0],
-    }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const data = new FormData();
-
-    data.append("title", formData.title);
-    data.append("subject", formData.subject);
-    data.append("description", formData.description);
-    data.append("tags", formData.tags);
-
-    if (formData.file) {
-      data.append("file", formData.file);
+  const handleSubmit = async () => {
+    if (!title.trim() || !subject) {
+      setError("Please enter a title and choose a subject.");
+      return;
     }
 
-    console.log("Data ready for backend:", formData);
-
-    // Later:
-    // await fetch("http://localhost:5000/api/notes", {
-    //   method: "POST",
-    //   body: data,
-    //   credentials: "include"
-    // });
+    setError("");
+    setLoading(true);
+    try {
+      const note = await createNote({
+        title: title.trim(),
+        subject,
+        description: description.trim(),
+        tags: tags.split(/[\s,#]+/).filter(Boolean),
+        file,
+      });
+      onAdd(note);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  return (
-    <>
-      <div className="main">
+  return createPortal(
+    <div className="an-overlay" onClick={onClose}>
+      <div className="an-panel" onClick={(e) => e.stopPropagation()}>
 
-        <div className="add-note-header">
+        <div className="an-header">
           <div>
             <h2>Add Note</h2>
             <p>Share your notes with other students</p>
           </div>
-
-          <button
-            type="button"
-            className="close-btn"
-             onClick={onClose}
-          >
-            ✕
-          </button>
+          <button className="an-close" onClick={onClose} aria-label="Close">✕</button>
         </div>
 
-
-        <form onSubmit={handleSubmit}>
-
-          {/* Note Title */}
-          <div className="form-group">
+        <div className="an-body">
+          <div className="an-group">
             <label>Note Title</label>
-
             <input
               type="text"
-              name="title"
-              value={formData.title}
-              onChange={handleChange}
               placeholder="Enter note title..."
-              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
             />
           </div>
 
-
-          {/* Subject */}
-          <div className="form-group">
+          <div className="an-group">
             <label>Subject</label>
-
-            <select
-              name="subject"
-              value={formData.subject}
-              onChange={handleChange}
-              required
-            >
+            <select value={subject} onChange={(e) => setSubject(e.target.value)}>
               <option value="">Select subject</option>
-
-              <option value="Computer Science">
-                Computer Science
-              </option>
-
-              <option value="MCA">
-                MCA
-              </option>
-
-              <option value="BCA">
-                BCA
-              </option>
-
-              <option value="Cloud Computing">
-                Cloud Computing
-              </option>
-
-              <option value="DevOps / Linux">
-                DevOps / Linux
-              </option>
+              <option>Computer Science</option>
+              <option>MCA</option>
+              <option>BCA</option>
+              <option>Cloud Computing</option>
+              <option>DevOps / Linux</option>
+              <option>Projects</option>
+              <option>Study Material</option>
+              <option>Other</option>
             </select>
           </div>
 
-
-          {/* Description */}
-          <div className="form-group">
+          <div className="an-group">
             <label>Description</label>
-
             <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
               placeholder="Tell students about your notes..."
-              rows="4"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
 
-
-          {/* Upload */}
-          <div className="form-group">
+          <div className="an-group">
             <label>Upload Note</label>
-
-            <div className="upload-box">
-
-              <div className="upload-icon">
-                📄
-              </div>
-
-              <p>
-                {formData.file
-                  ? formData.file.name
-                  : "Upload your notes"}
-              </p>
-
-              <span>
-                PDF, DOCX or PPTX
-              </span>
-
+            <div className="an-upload">
+              <div className="an-upload-icon">📄</div>
+              <p>{file ? file.name : "Upload your notes"}</p>
+              <span>PDF, DOCX, PPTX or an image</span>
               <input
+                ref={fileRef}
                 type="file"
-                id="noteFile"
-                name="file"
-                accept=".pdf,.doc,.docx,.ppt,.pptx"
-                onChange={handleFileChange}
+                accept=".pdf,.docx,.pptx,image/*"
                 hidden
+                onChange={(e) => setFile(e.target.files[0] || null)}
               />
-
-              <label
-                htmlFor="noteFile"
-                className="browse-btn"
+              <button
+                type="button"
+                className="an-browse"
+                onClick={() => fileRef.current.click()}
               >
-                Browse File
-              </label>
-
+                {file ? "Change File" : "Browse File"}
+              </button>
             </div>
           </div>
 
-
-          {/* Tags */}
-          <div className="form-group">
+          <div className="an-group">
             <label>Tags</label>
-
             <input
               type="text"
-              name="tags"
-              value={formData.tags}
-              onChange={handleChange}
-              placeholder="#AWS #Cloud #DevOps"
+              placeholder="#AWS  #Cloud  #DevOps"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
             />
           </div>
 
+          {error && <p className="an-error">{error}</p>}
 
-          {/* Buttons */}
-          <div className="form-actions">
-
-            <button
-              type="reset"
-              className="cancel-btn"
-            >
-              Cancel
+          <div className="an-actions">
+            <button type="button" className="an-cancel" onClick={onClose}>Cancel</button>
+            <button type="button" className="an-add" onClick={handleSubmit} disabled={loading}>
+              {loading ? "Adding..." : "+ Add Note"}
             </button>
-
-            <button
-              type="submit"
-              className="add-btn"
-            >
-              + Add Note
-            </button>
-
           </div>
-
-        </form>
+        </div>
 
       </div>
-    </>
+    </div>,
+    document.body
   );
 }
 
