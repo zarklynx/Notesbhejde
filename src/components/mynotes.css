@@ -1,0 +1,617 @@
+
+
+.my-notes-overlay {
+  position: fixed;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background: rgba(18, 28, 21, 0.62);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px;
+
+  z-index: 2000;
+
+  backdrop-filter: blur(4px);
+}
+
+
+/* =========================================
+   LARGE NOTES WORKSPACE
+========================================= */
+
+.my-notes-modal {
+  width: 94vw;
+  height: 90vh;
+
+  max-width: 1400px;
+
+  background: #f5f7f5;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.3);
+
+  animation: notesOpen 0.2s ease;
+}
+
+
+@keyframes notesOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.my-notes-header {
+  min-height: 78px;
+
+  padding: 18px 25px;
+
+  background: #ffffff;
+
+  border-bottom: 1px solid #e3e8e3;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  flex-shrink: 0;
+}
+
+
+.my-notes-header h1 {
+  margin: 0;
+
+  font-size: 26px;
+
+  color: #26352a;
+}
+
+
+.my-notes-header p {
+  margin: 6px 0 0;
+
+  color: #7b847d;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   HEADER RIGHT
+========================================= */
+
+.header-right {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+.notes-count {
+  padding: 9px 17px;
+
+  background: #e8f3ea;
+
+  color: #35683f;
+
+  border-radius: 20px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+.close-notes {
+  width: 38px;
+  height: 38px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: #f1f3f1;
+
+  color: #56615a;
+
+  font-size: 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.close-notes:hover {
+  background: #e8ece8;
+
+  color: #26352a;
+}
+
+
+/* =========================================
+   NOTES TOOLBAR
+========================================= */
+
+.my-notes-modal::before {
+  content: "";
+
+  display: block;
+}
+
+
+/* =========================================
+   NOTES GRID AREA
+========================================= */
+
+.notes-grid {
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 25px;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(280px, 1fr));
+
+  gap: 20px;
+
+  align-content: start;
+}
+
+
+/* Scrollbar */
+
+.notes-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.notes-grid::-webkit-scrollbar-track {
+  background: #edf0ed;
+}
+
+.notes-grid::-webkit-scrollbar-thumb {
+  background: #c5cec6;
+
+  border-radius: 10px;
+}
+
+.notes-grid::-webkit-scrollbar-thumb:hover {
+  background: #9fac9f;
+}
+
+
+/* =========================================
+   NOTE CARD
+========================================= */
+
+.note-card {
+  background: #ffffff;
+
+  border: 1px solid #e1e6e1;
+
+  border-radius: 13px;
+
+  padding: 20px;
+
+  min-height: 285px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  transition: 0.2s ease;
+}
+
+
+.note-card:hover {
+  transform: translateY(-3px);
+
+  border-color: #cbdaca;
+
+  box-shadow:
+    0 10px 28px rgba(45, 71, 49, 0.09);
+}
+
+
+/* =========================================
+   CARD TOP
+========================================= */
+
+.note-card-top {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 17px;
+}
+
+
+.file-icon {
+  width: 46px;
+  height: 46px;
+
+  background: #e9f4eb;
+
+  border-radius: 10px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  font-size: 22px;
+}
+
+
+.delete-btn {
+  width: 35px;
+  height: 35px;
+
+  border: none;
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: #89928b;
+
+  font-size: 15px;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.delete-btn:hover {
+  background: #fff0f0;
+
+  color: #d45252;
+}
+
+
+/* =========================================
+   CARD CONTENT
+========================================= */
+
+.note-card h2 {
+  margin: 0 0 7px;
+
+  color: #26352a;
+
+  font-size: 19px;
+
+  line-height: 1.35;
+}
+
+
+.note-subject {
+  margin: 0 0 14px;
+
+  color: #397045;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+
+.note-description {
+  margin: 0 0 16px;
+
+  color: #707970;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 3;
+
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
+}
+
+
+/* =========================================
+   TAGS
+========================================= */
+
+.note-tags {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+
+  margin-bottom: 17px;
+}
+
+
+.note-tags span {
+  padding: 5px 9px;
+
+  background: #edf5ee;
+
+  color: #397045;
+
+  border-radius: 5px;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+/* =========================================
+   FILE
+========================================= */
+
+.note-file {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px;
+
+  background: #f7f9f7;
+
+  border: 1px solid #edf0ed;
+
+  border-radius: 7px;
+
+  color: #68736b;
+
+  font-size: 11px;
+
+  margin-top: auto;
+
+  margin-bottom: 16px;
+
+  overflow: hidden;
+}
+
+
+.note-file span:last-child {
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* =========================================
+   CARD FOOTER
+========================================= */
+
+.note-footer {
+  padding-top: 14px;
+
+  border-top: 1px solid #edf0ed;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+}
+
+
+.note-footer span {
+  color: #919991;
+
+  font-size: 10px;
+}
+
+
+/* View */
+
+.view-btn {
+  border: none;
+
+  background: #35683f;
+
+  color: #ffffff;
+
+  padding: 8px 16px;
+
+  border-radius: 6px;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.view-btn:hover {
+  background: #285631;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.no-notes {
+  flex: 1;
+
+  margin: 25px;
+
+  border: 1px dashed #cbd4cc;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  text-align: center;
+}
+
+
+.empty-icon {
+  font-size: 45px;
+
+  margin-bottom: 12px;
+}
+
+
+.no-notes h2 {
+  margin: 0 0 8px;
+
+  font-size: 20px;
+
+  color: #35443a;
+}
+
+
+.no-notes p {
+  margin: 0;
+
+  color: #89928b;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1400px) {
+
+  .my-notes-modal {
+    max-width: 1450px;
+  }
+
+  .notes-grid {
+    grid-template-columns:
+      repeat(4, minmax(250px, 1fr));
+  }
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1000px) {
+
+  .my-notes-overlay {
+    padding: 18px;
+  }
+
+  .my-notes-modal {
+    width: 96vw;
+
+    height: 92vh;
+  }
+
+  .notes-grid {
+    grid-template-columns:
+      repeat(2, minmax(250px, 1fr));
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 650px) {
+
+  .my-notes-overlay {
+    padding: 8px;
+  }
+
+  .my-notes-modal {
+    width: 98vw;
+
+    height: 94vh;
+
+    border-radius: 12px;
+  }
+
+  .my-notes-header {
+    padding: 15px;
+
+    min-height: 70px;
+  }
+
+  .my-notes-header h1 {
+    font-size: 21px;
+  }
+
+  .my-notes-header p {
+    font-size: 11px;
+  }
+
+  .notes-count {
+    display: none;
+  }
+
+  .notes-grid {
+    padding: 15px;
+
+    grid-template-columns: 1fr;
+  }
+
+  .note-card {
+    min-height: 260px;
+  }
+}
+
