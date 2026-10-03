@@ -1,293 +1,219 @@
-/* =========================
-   POPUP OVERLAY
-========================= */
+/* Add Note popup. All classes are prefixed with an- so they cannot clash with dash.css. */
 
-.main {
+.an-overlay {
   position: fixed;
   inset: 0;
-
-  width: 100%;
-  height: 100%;
-
+  z-index: 9999;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-
+  justify-content: center;
   padding: 2%;
   box-sizing: border-box;
-
   background: rgba(0, 0, 0, 0.22);
   backdrop-filter: blur(0.4rem);
   -webkit-backdrop-filter: blur(0.4rem);
-
-  z-index: 1000;
-
-  overflow-y: auto;
 }
 
-
-/* =========================
-   HEADER
-========================= */
-
-.add-note-header {
+.an-panel {
+  display: flex;
+  flex-direction: column;
   width: 90%;
   max-width: 32rem;
+  max-height: 92vh;
+  background: rgba(255, 255, 255, 0.97);
+  border-radius: 0.8rem;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+  color: #1f2937;
+}
 
+/* header */
+.an-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   padding: 1rem 1.25rem 0.7rem;
-
   box-sizing: border-box;
-
-  background: rgba(255, 255, 255, 0.92);
-
-  border-radius: 0.8rem 0.8rem 0 0;
 }
 
-.add-note-header h2 {
+.an-header h2 {
   margin: 0 0 0.2rem;
-
   font-size: 1.25rem;
   font-weight: 600;
 }
 
-.add-note-header p {
+.an-header p {
   margin: 0;
-
   font-size: 0.75rem;
   color: #777;
 }
 
-
-/* =========================
-   CLOSE BUTTON
-========================= */
-
-.close-btn {
+.an-close {
   width: 2rem;
   height: 2rem;
-
   border: none;
   border-radius: 50%;
-
   background: rgba(0, 0, 0, 0.06);
-
   font-size: 0.9rem;
-
   cursor: pointer;
 }
 
-
-/* =========================
-   FORM
-========================= */
-
-.main > form {
-  width: 90%;
-  max-width: 32rem;
-
-  padding: 0 1.25rem 1.25rem;
-
-  box-sizing: border-box;
-
-  background: rgba(255, 255, 255, 0.92);
-
-  border-radius: 0 0 0.8rem 0.8rem;
-
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.18);
+.an-close:hover {
+  background: rgba(0, 0, 0, 0.12);
 }
 
+/* scrollable form area */
+.an-body {
+  padding: 0 1.25rem 1.25rem;
+  overflow-y: auto;
+}
 
-/* =========================
-   FORM GROUP
-========================= */
-
-.form-group {
+.an-group {
   width: 100%;
   margin-bottom: 0.8rem;
 }
 
-.form-group label {
+.an-group label {
   display: block;
-
   margin-bottom: 0.3rem;
-
   font-size: 0.78rem;
   font-weight: 500;
-
   color: #374151;
 }
 
-
-/* =========================
-   INPUTS
-========================= */
-
-.form-group input,
-.form-group select,
-.form-group textarea {
+.an-group input,
+.an-group select,
+.an-group textarea {
   width: 100%;
-
   box-sizing: border-box;
-
   padding: 0.6rem 0.7rem;
-
   border: 0.0625rem solid #ddd;
   border-radius: 0.5rem;
-
   background: rgba(255, 255, 255, 0.8);
-
   font-size: 0.8rem;
-
+  font-family: inherit;
   outline: none;
 }
 
-.form-group textarea {
+.an-group input:focus,
+.an-group select:focus,
+.an-group textarea:focus {
+  border-color: #4caf50;
+}
+
+.an-group textarea {
   height: 4.5rem;
   min-height: 4.5rem;
-
   resize: none;
 }
 
-
-/* =========================
-   UPLOAD
-========================= */
-
-.upload-box {
+/* upload */
+.an-upload {
   width: 100%;
-
   box-sizing: border-box;
-
   padding: 0.8rem;
-
   text-align: center;
-
   border: 0.1rem dashed rgba(76, 175, 80, 0.45);
-
   border-radius: 0.6rem;
-
   background: rgba(76, 175, 80, 0.04);
 }
 
-.upload-icon {
+.an-upload-icon {
   font-size: 1.4rem;
-
   margin-bottom: 0.2rem;
 }
 
-.upload-box p {
+.an-upload p {
   margin: 0.2rem 0;
-
   font-size: 0.78rem;
+  word-break: break-all;
 }
 
-.upload-box span {
+.an-upload span {
   display: block;
-
   margin-bottom: 0.6rem;
-
   font-size: 0.65rem;
-
   color: #888;
 }
 
-
-/* =========================
-   BROWSE
-========================= */
-
-.browse-btn {
-  display: inline-block;
-
+.an-browse {
   padding: 0.45rem 0.8rem;
-
+  border: none;
   border-radius: 0.4rem;
-
   background: #4caf50;
-
-  color: white;
-
+  color: #fff;
   font-size: 0.7rem;
-
   cursor: pointer;
 }
 
+.an-browse:hover {
+  background: #43a047;
+}
 
-/* =========================
-   BUTTONS
-========================= */
+/* error */
+.an-error {
+  margin: 0 0 0.5rem;
+  font-size: 0.78rem;
+  color: #d32f2f;
+}
 
-.form-actions {
+/* buttons */
+.an-actions {
   display: flex;
   justify-content: flex-end;
-
   gap: 0.5rem;
-
   margin-top: 1rem;
 }
 
-.cancel-btn,
-.add-btn {
+.an-cancel,
+.an-add {
   padding: 0.55rem 0.9rem;
-
   border-radius: 0.45rem;
-
   font-size: 0.75rem;
-
   cursor: pointer;
 }
 
-.cancel-btn {
+.an-cancel {
   border: 0.0625rem solid #ddd;
-
-  background: white;
-
+  background: #fff;
   color: #555;
 }
 
-.add-btn {
+.an-add {
   border: none;
-
   background: #4caf50;
-
-  color: white;
+  color: #fff;
 }
 
+.an-add:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
 
-/* =========================
-   MOBILE
-========================= */
-
+/* mobile */
 @media (max-width: 30rem) {
-
-  .main {
+  .an-overlay {
     padding: 3%;
   }
 
-  .add-note-header,
-  .main > form {
+  .an-panel {
     width: 96%;
   }
 
-  .add-note-header {
+  .an-header {
     padding: 0.9rem 1rem 0.6rem;
   }
 
-  .main > form {
+  .an-body {
     padding: 0 1rem 1rem;
   }
 
-  .form-actions {
+  .an-actions {
     flex-direction: column;
   }
 
-  .cancel-btn,
-  .add-btn {
+  .an-cancel,
+  .an-add {
     width: 100%;
   }
 }

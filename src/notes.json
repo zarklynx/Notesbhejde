@@ -1,0 +1,513 @@
+[
+  {
+    "id": 1,
+    "owner": "Rohit Sharma",
+    "name": "Rohit Sharma",
+    "topic": "AWS Cloud Practitioner",
+    "subject": "Cloud Computing",
+    "info": "A quick summary of core AWS services, IAM, EC2 and S3 for beginners.",
+    "content": "Amazon Web Services (AWS) is the world's most comprehensive and broadly adopted cloud computing platform, with over 240 fully featured services from data centres globally.\n\nIt pioneered the on-demand, pay-as-you-go cloud model, so businesses and developers can use compute power, storage and databases without maintaining physical infrastructure.\n\nKey services: IAM (access control), EC2 (virtual servers), S3 (object storage), VPC (private networks).",
+    "images": [
+      "/notes/aws-diagram.png"
+    ],
+    "file": "/notes/aws-notes.pdf",
+    "tags": [
+      "AWS",
+      "Cloud",
+      "DevOps"
+    ],
+    "review": 4.8,
+    "saved": 42,
+    "fav": 58,
+    "comment": 7,
+    "createdAt": "2026-10-02T10:30:00Z"
+  },
+  {
+    "id": 2,
+    "owner": "Sneha Patil",
+    "name": "Sneha Patil",
+    "topic": "Git Basics for Beginners",
+    "subject": "Computer Science",
+    "info": "Simple explanation of Git commands with real world examples.",
+    "content": "Git is a version control system that tracks changes in your code.\n\nStart with git init, stage files with git add, save a snapshot with git commit, and share work with git push and git pull.",
+    "images": [
+      "/notes/git-diagram.png"
+    ],
+    "file": "/notes/git-notes.pdf",
+    "tags": [
+      "Git",
+      "Version Control"
+    ],
+    "review": 4.6,
+    "saved": 35,
+    "fav": 58,
+    "comment": 12,
+    "createdAt": "2026-10-01T15:10:00Z"
+  },
+  {
+    "id": 3,
+    "owner": "Vivek",
+    "name": "Vivek",
+    "topic": "MERN Expense Tracker",
+    "subject": "Projects",
+    "info": "Expense tracker built with the MERN stack and deployed on AWS.",
+    "content": "A full stack expense tracker using MongoDB, Express, React and Node.js.\n\nThe React frontend talks to an Express API, which stores expenses in MongoDB. The app is deployed on AWS.",
+    "images": [
+      "/notes/mern-diagram.png"
+    ],
+    "file": "/notes/mern-notes.pdf",
+    "tags": [
+      "MERN",
+      "AWS",
+      "Project"
+    ],
+    "review": 4.9,
+    "saved": 95,
+    "fav": 76,
+    "comment": 23,
+    "createdAt": "2026-09-30T09:00:00Z"
+  },
+  {
+    "id": 4,
+    "owner": "Pooja Singh",
+    "name": "Pooja Singh",
+    "topic": "Linux Commands Cheat Sheet",
+    "subject": "DevOps / Linux",
+    "info": "Useful Linux commands with examples for quick revision.",
+    "content": "The most useful Linux commands for beginners: ls, cd, pwd, mkdir, rm, cp, mv and chmod.\n\nPractise them in a terminal to remember them.",
+    "images": [
+      "/notes/linux-diagram.png"
+    ],
+    "file": "/notes/linux-notes.pdf",
+    "tags": [
+      "Linux",
+      "Cheat Sheet"
+    ],
+    "review": 4.7,
+    "saved": 76,
+    "fav": 64,
+    "comment": 18,
+    "createdAt": "2026-09-28T18:45:00Z"
+  },
+  {
+    "id": 5,
+    "owner": "Aaryan Deshmukh",
+    "name": "Aaryan Deshmukh",
+    "topic": "Python Basics for Beginners",
+    "subject": "Computer Science",
+    "info": "Variables, loops, functions and lists explained with simple examples.",
+    "content": "Python is a beginner friendly language with clean syntax.\n\nCore ideas: variables, data types, if/else, for and while loops, functions and lists. Practise by writing small programs every day.",
+    "images": [
+      "/notes/linux-diagram.png"
+    ],
+    "file": null,
+    "tags": [
+      "Python",
+      "Beginner",
+      "Programming"
+    ],
+    "review": 4.5,
+    "saved": 27,
+    "fav": 58,
+    "comment": 21,
+    "createdAt": "2026-09-27T12:00:00Z"
+  },
+  {
+    "id": 6,
+    "owner": "Kartik Raj",
+    "name": "Kartik Raj",
+    "topic": "Data Structures: Arrays and Linked Lists",
+    "subject": "Computer Science",
+    "info": "How arrays and linked lists store data, and when to use each one.",
+    "content": "An array stores items in continuous memory, so reading by index is fast but inserting in the middle is slow.\n\nA linked list stores nodes that point to the next node, so inserting is fast but reading by position is slow.",
+    "images": [],
+    "file": "/notes/git-notes.pdf",
+    "tags": [
+      "DSA",
+      "Arrays",
+      "Exam"
+    ],
+    "review": 4.3,
+    "saved": 76,
+    "fav": 20,
+    "comment": 12,
+    "createdAt": "2026-09-26T03:00:00Z"
+  },
+  {
+    "id": 7,
+    "owner": "Kartik Raj",
+    "name": "Kartik Raj",
+    "topic": "Linear Algebra - Notes",
+    "subject": "MCA",
+    "info": "Formulas, examples and important points for MCA.",
+    "content": "Topics covered: matrices, determinants, rank, eigenvalues and eigenvectors.\n\nRemember: det(AB) = det(A) x det(B), and a matrix is invertible only when its determinant is not zero.",
+    "images": [
+      "/notes/mern-diagram.png"
+    ],
+    "file": null,
+    "tags": [
+      "MCA",
+      "Notes",
+      "Important"
+    ],
+    "review": 4.2,
+    "saved": 72,
+    "fav": 35,
+    "comment": 2,
+    "createdAt": "2026-09-25T11:00:00Z"
+  },
+  {
+    "id": 8,
+    "owner": "Sneha Patil",
+    "name": "Sneha Patil",
+    "topic": "DBMS - Important Questions",
+    "subject": "MCA",
+    "info": "Most expected and repeated questions with answers for university exams.",
+    "content": "Frequently asked: ER diagrams, normalization (1NF to BCNF), ACID properties, joins, transactions and indexing.\n\nWrite one clear example for each topic in the exam.",
+    "images": [
+      "/notes/aws-diagram.png"
+    ],
+    "file": "/notes/aws-notes.pdf",
+    "tags": [
+      "DBMS",
+      "Notes",
+      "Exam"
+    ],
+    "review": 4.5,
+    "saved": 16,
+    "fav": 38,
+    "comment": 3,
+    "createdAt": "2026-09-24T04:00:00Z"
+  },
+  {
+    "id": 9,
+    "owner": "Aditya Kulkarni",
+    "name": "Aditya Kulkarni",
+    "topic": "Operating System Concepts",
+    "subject": "BCA",
+    "info": "Processes, threads, scheduling and memory management in simple words.",
+    "content": "A process is a running program. A thread is a smaller unit of work inside a process.\n\nCPU scheduling decides which process runs next (FCFS, SJF, Round Robin). Paging splits memory into fixed size blocks.",
+    "images": [],
+    "file": "/notes/linux-notes.pdf",
+    "tags": [
+      "OS",
+      "BCA",
+      "Theory"
+    ],
+    "review": 4.5,
+    "saved": 80,
+    "fav": 23,
+    "comment": 8,
+    "createdAt": "2026-09-23T03:00:00Z"
+  },
+  {
+    "id": 10,
+    "owner": "Pooja Singh",
+    "name": "Pooja Singh",
+    "topic": "Computer Networks Basics",
+    "subject": "BCA",
+    "info": "OSI model, TCP/IP, IP addressing and common protocols.",
+    "content": "The OSI model has 7 layers: physical, data link, network, transport, session, presentation and application.\n\nTCP is reliable and ordered. UDP is faster but has no delivery guarantee.",
+    "images": [
+      "/notes/git-diagram.png"
+    ],
+    "file": null,
+    "tags": [
+      "Networking",
+      "OSI",
+      "BCA"
+    ],
+    "review": 5.0,
+    "saved": 81,
+    "fav": 82,
+    "comment": 13,
+    "createdAt": "2026-09-22T12:00:00Z"
+  },
+  {
+    "id": 11,
+    "owner": "Kartik Raj",
+    "name": "Kartik Raj",
+    "topic": "Docker for Beginners",
+    "subject": "DevOps / Linux",
+    "info": "Images, containers and the basic Docker commands you need first.",
+    "content": "Docker packages an app and everything it needs into a container.\n\nBasic commands: docker build, docker run, docker ps, docker stop and docker compose up.",
+    "images": [
+      "/notes/linux-diagram.png"
+    ],
+    "file": "/notes/linux-notes.pdf",
+    "tags": [
+      "Docker",
+      "DevOps",
+      "Containers"
+    ],
+    "review": 5.0,
+    "saved": 13,
+    "fav": 79,
+    "comment": 28,
+    "createdAt": "2026-09-21T10:00:00Z"
+  },
+  {
+    "id": 12,
+    "owner": "Rohit Sharma",
+    "name": "Rohit Sharma",
+    "topic": "Kubernetes Cheat Sheet",
+    "subject": "DevOps / Linux",
+    "info": "Pods, deployments, services and the kubectl commands to remember.",
+    "content": "A pod is the smallest unit in Kubernetes. A deployment keeps the right number of pods running. A service gives pods a stable address.\n\nUseful: kubectl get pods, kubectl apply -f, kubectl logs and kubectl describe.",
+    "images": [],
+    "file": "/notes/aws-notes.pdf",
+    "tags": [
+      "Kubernetes",
+      "DevOps",
+      "Cheat Sheet"
+    ],
+    "review": 4.4,
+    "saved": 26,
+    "fav": 77,
+    "comment": 4,
+    "createdAt": "2026-09-20T03:00:00Z"
+  },
+  {
+    "id": 13,
+    "owner": "Aaryan Deshmukh",
+    "name": "Aaryan Deshmukh",
+    "topic": "AWS S3 and IAM Explained",
+    "subject": "Cloud Computing",
+    "info": "How buckets, objects and permissions work in S3 and IAM.",
+    "content": "S3 stores files as objects inside buckets. Buckets are private by default.\n\nIAM controls who can do what, using users, roles and policies. Always give the minimum permissions needed.",
+    "images": [
+      "/notes/aws-diagram.png"
+    ],
+    "file": null,
+    "tags": [
+      "AWS",
+      "S3",
+      "IAM"
+    ],
+    "review": 4.4,
+    "saved": 95,
+    "fav": 31,
+    "comment": 4,
+    "createdAt": "2026-09-19T03:00:00Z"
+  },
+  {
+    "id": 14,
+    "owner": "Pooja Singh",
+    "name": "Pooja Singh",
+    "topic": "Azure Fundamentals",
+    "subject": "Cloud Computing",
+    "info": "Core Azure services and how they compare with AWS.",
+    "content": "Azure Virtual Machines are like EC2. Blob Storage is like S3. Azure Active Directory handles identity.\n\nLearn the shared responsibility model and the pricing basics first.",
+    "images": [],
+    "file": null,
+    "tags": [
+      "Azure",
+      "Cloud",
+      "Beginner"
+    ],
+    "review": 4.7,
+    "saved": 32,
+    "fav": 55,
+    "comment": 4,
+    "createdAt": "2026-09-18T04:00:00Z"
+  },
+  {
+    "id": 15,
+    "owner": "Vivek",
+    "name": "Vivek",
+    "topic": "React Hooks Guide",
+    "subject": "Computer Science",
+    "info": "useState, useEffect and useRef with small working examples.",
+    "content": "useState keeps a value that changes. useEffect runs code after the page renders. useRef keeps a value without re-rendering.\n\nRule: only call hooks at the top of a function component, never inside loops or conditions.",
+    "images": [
+      "/notes/mern-diagram.png"
+    ],
+    "file": "/notes/mern-notes.pdf",
+    "tags": [
+      "React",
+      "Hooks",
+      "Frontend"
+    ],
+    "review": 4.8,
+    "saved": 80,
+    "fav": 15,
+    "comment": 20,
+    "createdAt": "2026-09-17T09:00:00Z"
+  },
+  {
+    "id": 16,
+    "owner": "Aditya Kulkarni",
+    "name": "Aditya Kulkarni",
+    "topic": "Library Management System - Java Project",
+    "subject": "Projects",
+    "info": "A simple Java project with classes, file handling and a menu.",
+    "content": "Features: add books, issue and return books, search by title and track due dates.\n\nBuilt with Java OOP: Book, Member and Library classes, with data saved in a text file.",
+    "images": [
+      "/notes/git-diagram.png"
+    ],
+    "file": "/notes/git-notes.pdf",
+    "tags": [
+      "Java",
+      "Project",
+      "OOP"
+    ],
+    "review": 4.6,
+    "saved": 76,
+    "fav": 62,
+    "comment": 25,
+    "createdAt": "2026-09-16T07:00:00Z"
+  },
+  {
+    "id": 17,
+    "owner": "Sneha Patil",
+    "name": "Sneha Patil",
+    "topic": "Placement Preparation Roadmap",
+    "subject": "Study Material",
+    "info": "A 3 month plan for aptitude, coding and interviews.",
+    "content": "Month 1: aptitude and DSA basics. Month 2: coding practice and core subjects (OS, DBMS, CN). Month 3: mock interviews and resume.\n\nPractise a little every day instead of cramming.",
+    "images": [],
+    "file": null,
+    "tags": [
+      "Placement",
+      "Roadmap",
+      "Career"
+    ],
+    "review": 4.6,
+    "saved": 66,
+    "fav": 54,
+    "comment": 10,
+    "createdAt": "2026-09-15T09:00:00Z"
+  },
+  {
+    "id": 18,
+    "owner": "Rohit Sharma",
+    "name": "Rohit Sharma",
+    "topic": "Aptitude Formulas Sheet",
+    "subject": "Study Material",
+    "info": "Percentage, profit and loss, time and work, and speed formulas.",
+    "content": "Percentage change = (change / original) x 100.\n\nProfit % = (profit / cost price) x 100. Speed = distance / time. Work done = rate x time.",
+    "images": [],
+    "file": "/notes/mern-notes.pdf",
+    "tags": [
+      "Aptitude",
+      "Formulas",
+      "Placement"
+    ],
+    "review": 4.8,
+    "saved": 97,
+    "fav": 39,
+    "comment": 3,
+    "createdAt": "2026-09-14T03:00:00Z"
+  },
+  {
+    "id": 19,
+    "owner": "Aaryan Deshmukh",
+    "name": "Aaryan Deshmukh",
+    "topic": "Resume Tips for Freshers",
+    "subject": "Other",
+    "info": "What to write, what to skip and how to keep it to one page.",
+    "content": "Keep it to one page. Lead with projects and skills. Use clear numbers, like how many users or how much faster.\n\nSkip photos and long objective statements. Save it as a PDF.",
+    "images": [
+      "/notes/linux-diagram.png"
+    ],
+    "file": null,
+    "tags": [
+      "Resume",
+      "Career",
+      "Tips"
+    ],
+    "review": 4.4,
+    "saved": 71,
+    "fav": 51,
+    "comment": 24,
+    "createdAt": "2026-09-13T05:00:00Z"
+  },
+  {
+    "id": 20,
+    "owner": "Vivek",
+    "name": "Vivek",
+    "topic": "Express and MongoDB Basics",
+    "subject": "Projects",
+    "info": "Build a simple REST API with Express and MongoDB.",
+    "content": "Create routes for GET, POST, PUT and DELETE. Use Mongoose to define a schema and save documents.\n\nTest each route with Postman before connecting the React frontend.",
+    "images": [
+      "/notes/mern-diagram.png"
+    ],
+    "file": "/notes/mern-notes.pdf",
+    "tags": [
+      "Express",
+      "MongoDB",
+      "API"
+    ],
+    "review": 4.4,
+    "saved": 17,
+    "fav": 23,
+    "comment": 17,
+    "createdAt": "2026-09-12T06:00:00Z"
+  },
+  {
+    "id": 21,
+    "owner": "Sneha Patil",
+    "name": "Sneha Patil",
+    "topic": "Java OOP Concepts",
+    "subject": "BCA",
+    "info": "Classes, objects, inheritance, polymorphism and encapsulation.",
+    "content": "A class is a blueprint and an object is one copy made from it.\n\nInheritance reuses code, polymorphism lets one method behave in different ways, and encapsulation hides data behind methods.",
+    "images": [],
+    "file": "/notes/git-notes.pdf",
+    "tags": [
+      "Java",
+      "OOP",
+      "BCA"
+    ],
+    "review": 4.3,
+    "saved": 51,
+    "fav": 27,
+    "comment": 30,
+    "createdAt": "2026-09-11T05:00:00Z"
+  },
+  {
+    "id": 22,
+    "owner": "Kartik Raj",
+    "name": "Kartik Raj",
+    "topic": "Software Engineering - SDLC Models",
+    "subject": "MCA",
+    "info": "Waterfall, Agile, Spiral and V-model compared.",
+    "content": "Waterfall moves step by step and is hard to change. Agile works in short sprints with regular feedback.\n\nSpiral adds risk analysis to each loop, and the V-model pairs every build stage with a test stage.",
+    "images": [
+      "/notes/aws-diagram.png"
+    ],
+    "file": null,
+    "tags": [
+      "SDLC",
+      "MCA",
+      "Theory"
+    ],
+    "review": 4.5,
+    "saved": 93,
+    "fav": 17,
+    "comment": 25,
+    "createdAt": "2026-09-10T04:00:00Z"
+  },
+  {
+    "id": 23,
+    "owner": "Pooja Singh",
+    "name": "Pooja Singh",
+    "topic": "Time Management for Students",
+    "subject": "Other",
+    "info": "Simple habits to balance classes, study and rest.",
+    "content": "Plan the next day each evening. Study in 25 minute blocks with short breaks.\n\nPut the hardest subject first, and keep one fixed rest hour every day.",
+    "images": [],
+    "file": null,
+    "tags": [
+      "Study",
+      "Tips",
+      "Productivity"
+    ],
+    "review": 4.7,
+    "saved": 48,
+    "fav": 51,
+    "comment": 23,
+    "createdAt": "2026-09-09T07:00:00Z"
+  }
+]
