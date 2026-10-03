@@ -1,9 +1,12 @@
-import { useState } from 'react'
 import Dashboard from './dashboard'
+import MasterjiPreview from './components/masterji/MasterjiPreview'
+import MasterjiMotionPreview from './components/masterji/MasterjiMotionPreview'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+  if (new URLSearchParams(window.location.search).has('masterji-preview')) {
+    return new URLSearchParams(window.location.search).has('gallery') ? <MasterjiPreview /> : <MasterjiMotionPreview />
+  }
 
   return (
     <>

@@ -1,0 +1,195 @@
+.masterji-avatar { --eye-x: 0px; --eye-y: 0px; width: 160px; flex-shrink: 0; }
+.mj-final-design { grid-template-columns: minmax(0,1fr) !important; max-width: 560px !important; }
+.mj-final-design .mj-motion-stage { height: 330px; }
+.mj-final-design .mj-motion-stage > .bookworm-avatar { width: 285px; }
+.mj-notebook-character { transform-origin: 120px 228px; animation: mj-notebook-idle 4.5s ease-in-out infinite; }
+.mj-notebook-eyes { transform-origin: 124px 123px; animation: mj-blink 6s infinite; }
+.mj-notebook-moustache { transform-origin: 124px 165px; }
+.mj-pointer-arm { transform-origin: 196px 156px; transition: transform .5s ease; }
+.mj-held-book { transform-origin: 39px 174px; transition: transform .55s ease; }
+.mj-book-open { opacity: 0; transform: scaleX(.35); transform-origin: 53px 173px; transition: transform .55s cubic-bezier(.2,.7,.3,1), opacity .25s; }
+.mj-book-closed { opacity: 1; transform-origin: 53px 173px; transform: scaleX(1); transition: opacity .3s, transform .55s cubic-bezier(.2,.7,.3,1); }
+.mj-turn-page { transform-origin: 53px 157px; opacity: 0; }
+.bookworm-thinking .mj-book-open, .bookworm-writing .mj-book-open { opacity: 1; transform: scaleX(1); }
+.bookworm-thinking .mj-book-closed, .bookworm-writing .mj-book-closed { opacity: 0; transform: scaleX(.2); }
+.bookworm-thinking .mj-held-book, .bookworm-writing .mj-held-book { transform: translate(5px,-9px) rotate(5deg); }
+.bookworm-thinking .bw-pupils, .bookworm-writing .bw-pupils { animation: mj-read-eyes 2.6s ease-in-out infinite; }
+.bookworm-thinking .mj-turn-page { animation: mj-page-turn 4.4s 1.2s ease-in-out infinite; }
+.bookworm-thinking .mj-pointer-arm { transform: rotate(10deg); }
+.bookworm-writing .mj-pointer-arm { animation: mj-pointer-explain 3.6s ease-in-out infinite; }
+.bookworm-thinking .mj-notebook-character { animation: mj-notebook-think 3s ease-in-out infinite; }
+.bookworm-writing .mj-notebook-character { animation: mj-notebook-idle 4.5s ease-in-out infinite; }
+.bookworm-hello .mj-pointer-arm, .bookworm-idle:hover .mj-pointer-arm { animation: mj-pointer-wave 1.1s ease-in-out; }
+.bookworm-hello .mj-notebook-character { animation: mj-notebook-greet 1.1s ease-in-out; }
+.bookworm-happy .mj-notebook-character { animation: mj-notebook-aha 1.35s cubic-bezier(.25,.7,.3,1); }
+.bookworm-happy .mj-pointer-arm { transform: rotate(-12deg); }
+.bookworm-happy .mj-notebook-moustache { animation: mj-moustache-smile 1s ease-in-out; }
+@keyframes mj-notebook-idle { 50% { transform: translateY(-2px) rotate(.5deg); } }
+@keyframes mj-notebook-think { 0%,100% { transform: rotate(-1deg); } 35%,65% { transform: rotate(-2.5deg) translateY(1px); } }
+@keyframes mj-read-eyes { 0%,15%,100% { transform: translate(-5px,7px); } 35%,48% { transform: translate(0,7px); } 52%,65% { transform: translate(-5px,8px); } 80%,88% { transform: translate(0,1px); } }
+@keyframes mj-page-turn { 0%,15%,70%,100% { opacity: 0; transform: scaleX(.1) rotate(-5deg); } 25% { opacity: 1; transform: scaleX(1) rotate(-5deg); } 45% { opacity: 1; transform: scaleX(-.75) rotate(4deg); } 60% { opacity: 0; transform: scaleX(-1) rotate(8deg); } }
+@keyframes mj-pointer-wave { 25% { transform: rotate(-15deg); } 50% { transform: rotate(4deg); } 75% { transform: rotate(-9deg); } }
+@keyframes mj-pointer-explain { 0%,100% { transform: rotate(2deg); } 25%,40% { transform: rotate(-9deg); } 65%,75% { transform: rotate(-4deg); } }
+@keyframes mj-notebook-greet { 25% { transform: translateY(2px) scale(1.02,.98); } 50% { transform: translateY(-7px) rotate(-2deg); } 80% { transform: translateY(1px); } }
+@keyframes mj-moustache-smile { 50% { transform: translateY(-1px) scaleX(1.05); } }
+.mj-low-glasses { transform-origin: 124px 143px; }
+.mj-notebook-character .bw-brow-left, .mj-notebook-character .bw-brow-right { transition: transform .35s ease; }
+.bookworm-thinking .mj-notebook-character .bw-brow-left { animation: mj-curious-brow 4.4s ease-in-out infinite; }
+.bookworm-happy .mj-notebook-character .bw-brow-right { transform: translateY(-3px); }
+.bookworm-happy .bw-shadow { animation: mj-aha-shadow 1.35s ease-in-out; transform-origin: 120px 236px; }
+.bookworm-happy .bw-idea { animation: mj-idea-arrival 1.5s ease-out both; transform-origin: 200px 39px; }
+.bookworm-hello .mj-notebook-eyes { animation: mj-greeting-blink 1.2s ease-in-out; }
+.bookworm-happy .bw-mouth { transform: none; }
+@keyframes mj-curious-brow { 0%,100% { transform: translateY(0); } 45%,65% { transform: translateY(-2px); } }
+@keyframes mj-notebook-aha { 0% { transform: translateY(0); } 15% { transform: scale(1.025,.975) translateY(2px); } 40% { transform: translateY(-8px) rotate(-2deg); } 62% { transform: translateY(2px) scale(1.015,.985); } 80% { transform: translateY(-1px); } 100% { transform: none; } }
+@keyframes mj-aha-shadow { 40% { transform: scaleX(.85); opacity: .07; } }
+@keyframes mj-idea-arrival { 0%,15% { opacity: 0; transform: scale(.5); } 45%,70% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: translateY(-5px) scale(.8); } }
+@keyframes mj-greeting-blink { 0%,15%,30%,100% { transform: scaleY(1); } 23% { transform: scaleY(.07); } }
+.mj-motion-page { min-height: 100vh; padding: 0 28px 150px; background: #f6fafd; color: #0b2239; font-family: 'Segoe UI', sans-serif; }
+.mj-motion-nav { max-width: 1050px; margin: auto; padding: 24px 0; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e1ebef; }
+.mj-motion-nav a { text-decoration: none; color: #117a5a; font-size: 12px; }
+.mj-motion-nav a:first-child { font-size: 22px; font-weight: 750; letter-spacing: -.8px; }
+.mj-motion-nav a:first-child span { color: #0b2239; }
+.mj-motion-header { text-align: center; padding: 38px 0 25px; }
+.mj-motion-header h1 { margin: 12px 0; font-size: clamp(32px,4vw,46px); letter-spacing: -1.5px; font-weight: 650; }
+.mj-motion-header p { color: #678193; font-size: 14px; line-height: 1.7; }
+.mj-motion-controls { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 26px; }
+.mj-motion-controls button { font: inherit; font-size: 12px; padding: 10px 16px; border: 1px solid #dce7ed; background: white; border-radius: 24px; color: #658093; cursor: pointer; }
+.mj-motion-controls button[aria-pressed=true] { background: #117a5a; color: white; border-color: #117a5a; }
+.mj-motion-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; max-width: 920px; margin: auto; }
+.mj-motion-card { background: white; border: 1px solid #e1ebef; border-radius: 24px; padding: 20px 26px 25px; overflow: hidden; }
+.mj-motion-card.mj-picked { border-color: #89bba5; box-shadow: 0 5px 28px #117a5a08; }
+.mj-motion-card-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.mj-motion-card-top > span { font-size: 9px; letter-spacing: 1.5px; color: #7c929e; }
+.mj-motion-card-top button { padding: 7px 10px; border-radius: 14px; background: #eef7f2; color: #117a5a; font: inherit; font-size: 10px; cursor: pointer; border: none; }
+.mj-motion-stage { display: flex; align-items: center; justify-content: center; position: relative; height: 275px; width: 100%; background: none; border: none; cursor: pointer; }
+.mj-motion-halo { position: absolute; width: 215px; height: 215px; border-radius: 50%; background: #edf6f0; }
+.mj-motion-stage > .masterji-avatar, .mj-motion-stage > .bookworm-avatar { width: 220px; position: relative; }
+.mj-motion-stage .masterji-avatar svg { height: 234px; }
+.mj-motion-status { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 24px; font-size: 12px; color: #117a5a; }
+.mj-status-dot { width: 5px; height: 5px; background: #83b89a; border-radius: 50%; }
+.mj-dot-thinking, .mj-dot-writing { animation: mj-status-pulse 1.3s ease-in-out infinite; }
+.mj-motion-card h2 { text-align: center; font-size: 21px; margin: 16px 0 8px; letter-spacing: -.6px; }
+.mj-motion-card > p { text-align: center; color: #6d8796; font-size: 12px; line-height: 1.8; max-width: 325px; margin: 0 auto; }
+.mj-personality-tags { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+.mj-personality-tags span { font-size: 10px; padding: 5px 9px; border-radius: 6px; background: #f2f6f8; color: #638193; }
+.mj-demo-strip { display: flex; align-items: center; justify-content: space-between; gap: 20px; max-width: 920px; margin: 22px auto 0; background: #eaf4ee; padding: 20px 24px; border-radius: 18px; }
+.mj-demo-strip strong { font-size: 13px; color: #21543e; }
+.mj-demo-strip p { font-size: 11px; color: #729080; margin-top: 5px; }
+.mj-demo-strip button { background: #117a5a; color: white; font: inherit; font-size: 12px; padding: 12px 18px; border-radius: 22px; border: none; cursor: pointer; }
+.mj-motion-footnote { font-size: 10px; text-align: center; color: #8299a6; margin-top: 20px; }
+.mj-motion-page button:focus-visible { outline: 3px solid #d6ac4c; outline-offset: 4px; }
+.mj-motion-page .mj-launcher .bookworm-avatar { width: 64px; }
+.bookworm-avatar { --eye-x: 0px; --eye-y: 0px; width: 180px; flex-shrink: 0; }
+.bookworm-avatar svg { display: block; width: 100%; overflow: visible; }
+.bw-character { transform-origin: 94px 168px; animation: bw-idle 4.5s ease-in-out infinite; }
+.bw-eyes { transform-origin: 98px 83px; animation: mj-blink 6.2s infinite; }
+.bw-pupils { transform: translate(var(--eye-x),var(--eye-y)); transition: transform .12s ease-out; }
+.bw-idea, .bw-reading-lines { opacity: 0; }
+.bw-pencil-arm { transform-origin: 153px 103px; }
+.bookworm-idle:hover .bw-pencil-arm { animation: bw-wave .8s ease-in-out; }
+.bookworm-idle:hover .bw-brow-right { transform: translateY(-3px); }
+.bookworm-hello .bw-character { animation: bw-greet 1s ease-in-out; }
+.bookworm-hello .bw-pencil-arm { animation: bw-wave 1s ease-in-out; }
+.bookworm-thinking .bw-character { animation: bw-think 2.4s ease-in-out infinite; }
+.bookworm-thinking .bw-pupils { transform: translate(1px,-4px); }
+.bookworm-thinking .bw-pages { transform-origin: 48px 32px; animation: bw-pages 1.6s ease-in-out infinite; }
+.bookworm-thinking .bw-reading-lines { animation: mj-thoughts 1.6s ease-in-out infinite; }
+.bookworm-thinking .bw-brow-left { transform: translateY(3px); }
+.bookworm-writing .bw-pencil-arm { animation: bw-scribble .6s ease-in-out infinite; }
+.bookworm-writing .bw-character { animation: bw-idle 1.8s ease-in-out infinite; }
+.bookworm-writing .bw-pupils { transform: translate(4px,-1px); }
+.bookworm-writing .bw-moustache { transform-origin: 98px 110px; animation: bw-moustache 1.2s ease-in-out infinite; }
+.bookworm-happy .bw-character { animation: bw-celebrate 1.1s ease-in-out; }
+.bookworm-happy .bw-idea { animation: mj-thoughts 1.7s ease-in-out infinite; }
+.bookworm-happy .bw-pencil-arm { transform: rotate(-14deg); }
+.bookworm-happy .bw-mouth { transform: translateY(2px); }
+.masterji-hello .mj-head { animation: mj-hello 1s ease-in-out; }
+.masterji-hello .mj-brow-right { transform: translateY(-3px); }
+.mj-motion-page .masterji-happy .mj-head { animation: mj-ready-nod 1.1s ease-in-out; }
+.mj-motion-page .masterji-thinking .mj-thought circle:nth-child(2) { animation: mj-status-pulse 1.5s .2s infinite; }
+.mj-motion-page .masterji-thinking .mj-thought circle:nth-child(3) { animation: mj-status-pulse 1.5s .4s infinite; }
+.mj-motion-stage:hover .mj-motion-halo { background: #e4f1e8; }
+@keyframes mj-status-pulse { 50% { opacity: .3; } }
+@keyframes mj-ready-nod { 25% { transform: translateY(4px) rotate(3deg); } 55% { transform: translateY(-4px) rotate(-3deg); } 80% { transform: translateY(2px); } }
+@keyframes bw-idle { 50% { transform: translateY(-3px) rotate(1deg); } }
+@keyframes bw-think { 50% { transform: rotate(-5deg) translateY(-2px); } }
+@keyframes bw-pages { 50% { transform: skewX(-8deg) translateY(-2px); } }
+@keyframes bw-wave { 25%, 75% { transform: rotate(-24deg); } 50% { transform: rotate(5deg); } }
+@keyframes bw-greet { 25% { transform: translateY(-9px) rotate(-5deg); } 55% { transform: translateY(0) rotate(3deg); } 75% { transform: translateY(-3px); } }
+@keyframes bw-scribble { 25% { transform: rotate(12deg); } 75% { transform: rotate(-9deg); } }
+@keyframes bw-moustache { 50% { transform: rotate(-3deg); } }
+@keyframes bw-celebrate { 20% { transform: scale(1.03,.96); } 45% { transform: translateY(-13px) rotate(5deg); } 70% { transform: translateY(0) scale(1.02,.98); } }
+@media(max-width: 640px) { .mj-motion-page { padding: 0 18px 150px; } .mj-motion-grid { grid-template-columns: 1fr; } .mj-motion-header { padding-top: 28px; } .mj-demo-strip { flex-direction: column; text-align: center; } }
+@media(prefers-reduced-motion: reduce) { .mj-motion-page *, .bookworm-avatar * { animation: none !important; transition: none !important; } .bookworm-thinking .bw-reading-lines, .bookworm-happy .bw-idea { opacity: 1; } }
+.mj-gallery { min-height: 100vh; background: #f6fafd; color: #0b2239; font-family: 'Segoe UI', sans-serif; padding: 24px 28px 150px; }
+.mj-gallery .masterji-avatar * { animation: none !important; }
+.mj-gallery .mj-pupils { transform: none; }
+.mj-gallery-header { text-align: center; padding: 35px 12px; }
+.mj-gallery-header h1 { font-size: clamp(28px, 4vw, 42px); letter-spacing: -1.5px; margin: 12px 0; font-weight: 650; }
+.mj-gallery-header p { color: #638093; font-size: 14px; line-height: 1.7; }
+.mj-look-grid { max-width: 1200px; margin: auto; display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 20px; }
+.mj-look-card { padding: 0; border: 1px solid #e1eaf0; border-radius: 20px; background: white; overflow: hidden; text-align: left; cursor: pointer; color: #0b2239; font: inherit; box-shadow: 0 4px 18px #0b223904; }
+.mj-look-card:hover { border-color: #80b59e; }
+.mj-look-card.is-selected { border-color: #117a5a; box-shadow: 0 0 0 2px #117a5a; }
+.mj-look-art { position: relative; height: 250px; display: flex; align-items: center; justify-content: center; background: radial-gradient(circle at 50% 55%,#e5f2ec 0%,#e5f2ec 43%,#f0f6f7 44%); }
+.mj-look-art > svg, .mj-look-art > .masterji-avatar { width: 172px; height: 190px; }
+.mj-look-number { position: absolute; top: 18px; left: 18px; font-size: 11px; color: #78978b; }
+.mj-small-sample { position: absolute; right: 15px; bottom: 14px; width: 48px; height: 48px; border-radius: 50%; background: white; border: 1px solid #dbe9e0; display: flex; align-items: center; justify-content: center; }
+.mj-small-sample svg, .mj-small-sample .masterji-avatar { width: 37px; height: 40px; }
+.mj-look-copy { padding: 21px; }
+.mj-look-tag { font-size: 9px; letter-spacing: 1.5px; color: #117a5a; font-weight: 700; }
+.mj-look-copy h2 { font-size: 17px; letter-spacing: -.4px; margin: 8px 0; }
+.mj-look-copy p { margin: 0; font-size: 12px; line-height: 1.7; color: #698395; min-height: 61px; }
+.mj-selection-label { display: block; margin-top: 20px; font-size: 11px; color: #117a5a; font-weight: 600; }
+.mj-gallery-footer { text-align: center; font-size: 11px; color: #7b94a3; padding: 35px 20px; }
+.mj-gallery-launcher { position: fixed; bottom: 22px; right: 24px; display: flex; align-items: flex-end; flex-direction: column; gap: 8px; }
+.mj-gallery-launcher .mj-launcher { background: #fcfdfd; border-color: #dcebe4; }
+.mj-gallery-launcher .mj-launcher > svg, .mj-gallery-launcher .masterji-avatar { width: 64px; height: 68px; }
+.mj-launcher-hint { font-size: 10px; color: #638093; background: #f6fafd; padding: 4px 8px; border-radius: 8px; }
+@media(max-width: 600px) { .mj-gallery { padding: 22px 18px 140px; } }
+.masterji-avatar svg { display: block; width: 100%; overflow: visible; }
+.mj-head { transform-origin: 80px 115px; animation: mj-breathe 4s ease-in-out infinite; }
+.mj-eyes { transform-origin: 80px 72px; animation: mj-blink 5.7s infinite; }
+.mj-pupils { transform: translate(var(--eye-x), var(--eye-y)); transition: transform .12s ease-out; }
+.masterji-idle:hover .mj-head { animation: mj-hello .6s ease-in-out; }
+.mj-thought, .mj-spark { opacity: 0; }
+.masterji-thinking .mj-head { animation: mj-ponder 2.5s ease-in-out infinite; }
+.masterji-thinking .mj-pupils { transform: translate(2px, -3px); }
+.masterji-thinking .mj-thought { animation: mj-thoughts 1.5s ease-in-out infinite; }
+.masterji-thinking .mj-brow-left { transform: translateY(-3px); }
+.masterji-happy .mj-head { animation: mj-hello 1.8s ease-in-out infinite; }
+.masterji-happy .mj-spark { animation: mj-thoughts 1.8s ease-in-out infinite; }
+@keyframes mj-breathe { 50% { transform: translateY(-2px) rotate(-1deg); } }
+@keyframes mj-blink { 0%, 42%, 46%, 100% { transform: scaleY(1); } 44% { transform: scaleY(.08); } }
+@keyframes mj-hello { 0%, 100% { transform: rotate(0); } 35% { transform: rotate(-7deg) translateY(-3px); } 65% { transform: rotate(4deg); } }
+@keyframes mj-ponder { 50% { transform: rotate(-6deg) translateY(-2px); } }
+@keyframes mj-thoughts { 50% { opacity: 1; } }
+.mj-preview { box-sizing: border-box; min-height: 100vh; background: #f7f5ec; color: #203c34; font-family: 'Segoe UI', sans-serif; padding: 28px 36px 120px; background-image: radial-gradient(#d7dfd1 1px, transparent 1px); background-size: 24px 24px; }
+.mj-back { color: #527060; font-size: 13px; text-decoration: none; }
+.mj-preview-content { max-width: 700px; margin: 50px auto 0; text-align: center; }
+.mj-eyebrow { font-size: 11px; letter-spacing: 2.4px; font-weight: 700; color: #74816b; }
+.mj-preview h1 { font-size: clamp(32px, 5vw, 52px); line-height: 1.15; letter-spacing: -2px; font-weight: 600; margin: 18px 0; }
+.mj-preview h1 em { font-family: Georgia, serif; color: #33705b; font-weight: 400; }
+.mj-intro { max-width: 440px; margin: auto; color: #718074; line-height: 1.7; font-size: 15px; }
+.mj-character-stage { position: relative; margin: 30px auto 20px; width: 300px; height: 285px; display: flex; justify-content: center; align-items: center; background: radial-gradient(ellipse at center, #e6e9d9 0%, #e6e9d9 52%, transparent 53%); }
+.mj-character-stage .masterji-avatar { width: 225px; }
+.mj-stage-scribble { position: absolute; right: -12px; top: 9px; font-family: Georgia, serif; font-style: italic; color: #9a8148; transform: rotate(9deg); }
+.mj-stage-caption { position: absolute; bottom: 0; white-space: nowrap; font-size: 11px; color: #829080; }
+.mj-mood-controls { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.mj-mood-controls button { background: #fffdf7; border: 1px solid #d8decf; color: #647460; padding: 10px 15px; border-radius: 24px; cursor: pointer; font: inherit; font-size: 12px; transition: .2s; }
+.mj-mood-controls button[aria-pressed=true] { color: #fffdf7; background: #215b47; border-color: #215b47; }
+.mj-mood-controls button:hover { transform: translateY(-2px); }
+.mj-preview-note { color: #8a9483; font-size: 11px; margin-top: 24px; }
+.mj-launcher-preview { position: fixed; bottom: 24px; right: 24px; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+.mj-launcher { border: 1px solid #d0d9c5; border-radius: 22px; background: #fffdf5; cursor: pointer; padding: 8px 15px 8px 5px; display: flex; align-items: center; color: #234e3b; box-shadow: 0 6px 24px #233d3420; transition: transform .2s, box-shadow .2s; }
+.mj-launcher:hover { transform: translateY(-4px); box-shadow: 0 10px 30px #233d3430; }
+.mj-launcher .masterji-avatar { width: 64px; }
+.mj-launcher > span { font-size: 14px; font-weight: 600; display: flex; align-items: center; gap: 9px; }
+.mj-online-dot { width: 6px; height: 6px; border-radius: 50%; background: #669d65; }
+.mj-greeting { width: 230px; padding: 18px; background: #fffdf5; border: 1px solid #d0d9c5; border-radius: 18px 18px 4px 18px; font-size: 14px; box-shadow: 0 6px 24px #233d3410; animation: mj-pop .25s ease-out; }
+.mj-greeting span { display: block; margin-top: 7px; font-size: 12px; color: #7c8774; line-height: 1.5; }
+@keyframes mj-pop { from { opacity: 0; transform: translateY(8px); } }
+.mj-preview button:focus-visible, .mj-back:focus-visible { outline: 3px solid #d6ac4c; outline-offset: 4px; }
+@media (max-width: 500px) { .mj-preview { padding: 22px 18px 125px; } .mj-preview-content { margin-top: 40px; } .mj-character-stage { width: 260px; } .mj-stage-scribble { right: 0; } .mj-stage-caption { white-space: normal; } }
+@media (prefers-reduced-motion: reduce) { .masterji-avatar *, .mj-greeting { animation: none !important; transition: none !important; } .masterji-thinking .mj-thought, .masterji-happy .mj-spark { opacity: 1; } }

@@ -1,4 +1,14 @@
-# React + Vite
+# Notesbhejde
+
+## Run locally
+
+Run `npm install`, then `npm run dev`. Masterji connects to our hosted AI automatically; no API URL, access code, or Runware key needs configuring. Open a note and ask Masterji.
+
+Hackathon mode: the hosted AI does not require authentication. Requests use the owner's paid Runware balance. Basic request limits remain; add authentication before a public production launch. Never commit the Runware API key.
+
+For a separate local AI API, copy `.env.example` to `.env.local`, add your Runware key, and uncomment the empty `VITE_MASTERJI_API_URL` override. See the AI backend documentation for setup.
+
+## Frontend tooling
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
