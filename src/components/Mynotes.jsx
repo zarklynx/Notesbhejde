@@ -47,7 +47,7 @@ function MyNotes({ onClose }) {
         <div className="my-notes-header">
 
           <div>
-            <h1>My Notes</h1>
+            <h1>My ss Notes</h1>
             <p>Notes you have created and uploaded.</p>
           </div>
 
