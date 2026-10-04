@@ -4,7 +4,23 @@
 
 Run `npm install`, then `npm run dev`. Masterji connects to our hosted AI automatically; no API URL, access code, or Runware key needs configuring. Open a note and ask Masterji.
 
-Hackathon mode: the hosted AI does not require authentication. Requests use the owner's paid Runware balance. Basic request limits remain; add authentication before a public production launch. Never commit the Runware API key.
+## Firebase setup
+
+Create a Firebase Web app, enable Email/Password Authentication, and create
+Firestore. Copy `.env.example` to `.env.local` and fill the `VITE_FIREBASE_*`
+values from the Firebase console. Cloudinary stores uploaded note files so
+Firebase Storage billing is not required.
+
+Deploy rules and indexes from this directory with the Firebase CLI after selecting
+your project: `firebase use <project-id>` followed by `firebase deploy --only
+firestore:rules,firestore:indexes`.
+
+The Masterji Worker also requires the same Firebase project ID in
+`masterji-worker/wrangler.jsonc`. Cloudinary and Runware secrets are configured
+with `wrangler secret put`; never commit those values.
+
+AI, note uploads, and file deletion require a verified Firebase login. The Worker
+limits requests by authenticated user and IP address. Never commit provider keys.
 
 For a separate local AI API, copy `.env.example` to `.env.local`, add your Runware key, and uncomment the empty `VITE_MASTERJI_API_URL` override. See the AI backend documentation for setup.
 

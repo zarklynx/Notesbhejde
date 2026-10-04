@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function ownsExisting() {
+      return signedIn() && resource.data.ownerId == request.auth.uid;
+    }
+
+    function ownsNew() {
+      return signedIn() && request.resource.data.ownerId == request.auth.uid;
+    }
+
+    match /users/{userId} {
+      allow read, create, update: if signedIn() && request.auth.uid == userId;
+      allow delete: if false;
+    }
+
+    match /notes/{noteId} {
+      allow read: if signedIn() && resource.data.visibility == 'public';
+      allow create: if ownsNew()
+        && request.resource.data.isDemo == false
+        && request.resource.data.visibility in ['public', 'private'];
+      allow update: if ownsExisting()
+        && request.resource.data.ownerId == resource.data.ownerId
+        && resource.data.isDemo == false;
+      allow delete: if ownsExisting() && resource.data.isDemo == false;
+
+      match /comments/{commentId} {
+        allow read: if signedIn();
+        allow create: if signedIn()
+          && request.resource.data.authorId == request.auth.uid;
+        allow update, delete: if signedIn()
+          && resource.data.authorId == request.auth.uid;
+      }
+    }
+
+    match /users/{userId}/savedNotes/{noteId} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+
+    match /users/{userId}/favourites/{noteId} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+  }
+}

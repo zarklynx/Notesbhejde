@@ -9,9 +9,9 @@ const formatDate = (iso) =>
   });
 
 function MyNotes({ notes, onDelete, onView, onClose }) {
-  const handleDelete = (id) => {
+  const handleDelete = (note) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
-      onDelete(id);
+      onDelete(note);
     }
   };
 
@@ -56,7 +56,7 @@ function MyNotes({ notes, onDelete, onView, onClose }) {
 
                   <button
                     className="delete-btn"
-                    onClick={() => handleDelete(note.id)}
+                    onClick={() => handleDelete(note)}
                     aria-label="Delete note"
                   >
                     🗑

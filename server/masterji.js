@@ -1,6 +1,7 @@
 import { createServer } from 'node:http'
 import { pathToFileURL } from 'node:url'
 import { createOcrHandler } from './ocr.js'
+import { createNoteValidator } from './noteValidator.js'
 import { chatPlan } from '../src/components/masterji/chatPolicy.js'
 
 export function createMasterjiHandler({ apiKey, model = 'openai:gpt@5-nano', fetchImpl = fetch } = {}) {
@@ -39,5 +40,6 @@ export function createMasterjiHandler({ apiKey, model = 'openai:gpt@5-nano', fet
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const handler = createMasterjiHandler({ apiKey: process.env.RUNWARE_API_KEY, model: process.env.RUNWARE_MODEL })
   const ocr = createOcrHandler({ apiKey: process.env.RUNWARE_API_KEY })
-  createServer((req, res) => req.url === '/api/masterji/ocr' ? ocr(req, res) : req.url === '/api/masterji' ? handler(req, res) : (res.writeHead(404), res.end())).listen(8787, '127.0.0.1', () => console.log('Masterji API listening on 127.0.0.1:8787'))
+  const validator = createNoteValidator({ apiKey: process.env.RUNWARE_API_KEY, model: process.env.RUNWARE_MODEL })
+  createServer((req, res) => req.url === '/api/masterji/ocr' ? ocr(req, res) : req.url === '/api/masterji' ? handler(req, res) : req.url === '/api/validate-note' ? validator(req, res) : (res.writeHead(404), res.end())).listen(8787, '127.0.0.1', () => console.log('Masterji API listening on 127.0.0.1:8787'))
 }

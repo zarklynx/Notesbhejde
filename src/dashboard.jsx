@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./dash.css";
 import AddNotes from "./components/addnotes";
 import MyNotes from "./components/Mynotes";
 import NoteView from "./components/notesCard";
-import { getNotes, deleteNote, CURRENT_USER } from "./api";
+import { getNotes, deleteNote } from "./api";
+import { useAuth } from "./context/AuthContext";
 import {
   FaBell, FaUserCircle, FaChevronDown, FaPaperPlane,
   FaStar, FaRegBookmark, FaRegHeart, FaRegComment,
@@ -23,7 +24,10 @@ const categories = [
 ];
 
 function Dashboard() {
-  const [notes, setNotes] = useState(() => getNotes());
+  const { user, logout } = useAuth();
+  const [notes, setNotes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [catOpen, setCatOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("All Notes");
   const [unread] = useState(3);
@@ -32,23 +36,42 @@ function Dashboard() {
   const [showMyNotes, setShowMyNotes] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setLoadError("");
+    getNotes()
+      .then((nextNotes) => {
+        if (active) setNotes(nextNotes);
+      })
+      .catch((error) => {
+        if (active) setLoadError(error.message);
+      })
+      .finally(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [user?.uid]);
+
   const query = search.trim().toLowerCase();
 
   const filteredNotes = notes.filter((n) =>
-    [n.topic, n.name, n.info, ...n.tags].join(" ").toLowerCase().includes(query)
+    [n.topic, n.ownerName, n.info, ...(n.tags || [])].join(" ").toLowerCase().includes(query)
   );
 
   // only the notes owned by the logged in user
-  const myNotes = notes.filter((n) => n.owner === CURRENT_USER);
+  const myNotes = notes.filter((n) => n.ownerId === user.uid);
 
   const addNote = (note) => {
     setNotes((prev) => [note, ...prev]); // new note goes first
     setShowAdd(false);
   };
 
-  const handleDelete = (id) => {
-    deleteNote(id);
-    setNotes((prev) => prev.filter((n) => n.id !== id));
+  const handleDelete = async (note) => {
+    await deleteNote(note);
+    setNotes((prev) => prev.filter((n) => n.id !== note.id));
   };
 
   const handleViewFromMyNotes = (note) => {
@@ -70,7 +93,7 @@ function Dashboard() {
           />
         </div>
         <div className="signButtons">
-          <button>SignUp/SignIn</button>
+          <button onClick={logout}>Sign Out</button>
         </div>
         <div className="profile">
           <button className="bell" aria-label="Notifications">
@@ -79,7 +102,7 @@ function Dashboard() {
           </button>
           <button className="profileBtn" aria-label="Profile">
             <FaUserCircle />
-            <span>Profile</span>
+            <span>{user.displayName || "Profile"}</span>
           </button>
         </div>
       </div>
@@ -135,7 +158,9 @@ function Dashboard() {
 
         <div className="NotesBAr">
           <div className="grid">
-            {filteredNotes.length === 0 && (
+            {loading && <p className="noResults">Loading notes...</p>}
+            {!loading && loadError && <p className="noResults">{loadError}</p>}
+            {!loading && !loadError && filteredNotes.length === 0 && (
               <p className="noResults">No notes found for "{search}"</p>
             )}
 
@@ -143,8 +168,8 @@ function Dashboard() {
               <div className="card" key={n.id} onClick={() => setSelected(n)}>
                 <div className="part1">
                   <div className="userRow">
-                    <span className="userProfile">{n.name[0]}</span>
-                    <p className="username">{n.name}</p>
+                    <span className="userProfile">{(n.ownerName || "S")[0]}</span>
+                    <p className="username">{n.ownerName || "Student"}</p>
                   </div>
                   <h3 className="topic">{n.topic}</h3>
                   <p className="info">{n.info}</p>

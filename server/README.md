@@ -20,6 +20,8 @@ No chat is saved to storage.
 For production, Vite's static build does not include this API middleware. Mount
 `createMasterjiHandler` in the real backend at `/api/masterji`, set server secrets,
 and add authentication, rate limits and per-user usage limits before public use.
+The note validator is available at `/api/validate-note`; it uses the same Runware
+configuration and returns a structured content-match result before note publishing.
 The standalone `node server/masterji.js` process is a local-only adapter on 8787,
 and requires environment variables provided by its launcher.
 

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./Register.css";
+import { useAuth } from "../context/AuthContext";
 
 function Register({ onLogin }) {
   const [name, setName] = useState("");
@@ -7,16 +8,28 @@ function Register({ onLogin }) {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { register } = useAuth();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
-      alert("Passwords do not match!");
+      setError("Passwords do not match.");
       return;
     }
 
-    alert("Registration successful!");
+    setError("");
+    setLoading(true);
+    try {
+      await register({ name, email, password, mobile });
+      onLogin();
+    } catch (registerError) {
+      setError(registerError.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -81,8 +94,10 @@ function Register({ onLogin }) {
             required
           />
 
-          <button type="submit" className="auth-button">
-            Create Account
+          {error && <p role="alert">{error}</p>}
+
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
 
         </form>

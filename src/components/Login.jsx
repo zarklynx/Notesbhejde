@@ -1,17 +1,39 @@
 import { useState } from "react";
 import "./Login.css";
+import { useAuth } from "../context/AuthContext";
 
 function Login({ onRegister, onLoginSuccess }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { login, resetPassword } = useAuth();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      await login(email, password);
+      onLoginSuccess?.();
+    } catch (loginError) {
+      setError(loginError.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    alert("Login successful!");
-
-    if (onLoginSuccess) {
-      onLoginSuccess();
+  const handleReset = async () => {
+    if (!email) {
+      setError("Enter your email first to reset your password.");
+      return;
+    }
+    setError("");
+    try {
+      await resetPassword(email);
+      setError("Password reset email sent.");
+    } catch (resetError) {
+      setError(resetError.message);
     }
   };
 
@@ -50,9 +72,13 @@ function Login({ onRegister, onLoginSuccess }) {
             required
           />
 
-          <button type="submit" className="auth-button">
-            Sign In
+          {error && <p role="alert">{error}</p>}
+
+          <button type="submit" className="auth-button" disabled={loading}>
+            {loading ? "Signing In..." : "Sign In"}
           </button>
+
+          <button type="button" onClick={handleReset}>Forgot password?</button>
 
         </form>
 

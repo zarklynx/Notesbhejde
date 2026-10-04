@@ -1,6 +1,11 @@
-// Use our hosted AI by default. An explicit empty override uses the local API.
-export const aiServer = (import.meta.env.VITE_MASTERJI_API_URL ?? 'https://notesbhejde-masterji.sundarful.workers.dev').replace(/\/$/, '')
+import { auth } from '../../lib/firebase'
 
-export function aiFetch(path, options) {
-  return fetch(`${aiServer}${path}`, options)
+// Use our hosted AI by default. An explicit empty override uses the local API.
+export const aiServer = (import.meta.env.VITE_MASTERJI_API_URL ?? 'https://notesbhejde-masterji.notesbhejde.workers.dev').replace(/\/$/, '')
+
+export async function aiFetch(path, options = {}) {
+  if (!auth?.currentUser) throw new Error('Please sign in before using Masterji.')
+  const headers = new Headers(options.headers)
+  headers.set('Authorization', `Bearer ${await auth.currentUser.getIdToken()}`)
+  return fetch(`${aiServer}${path}`, { ...options, headers })
 }
