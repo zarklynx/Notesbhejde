@@ -54,6 +54,7 @@ export default function BookwormAvatar({ mood = 'idle', trackCursor = false, act
         <g className="mj-low-glasses" fill="none" stroke="#e4cf90" strokeWidth="3" strokeLinecap="round"><ellipse cx="97" cy="142" rx="22" ry="17" /><ellipse cx="154" cy="142" rx="22" ry="17" /><path d="M119 140q6-4 13 0M75 140l-10-4m111 4 9-4" /></g>
         <ellipse cx="125" cy="140" rx="6" ry="4.5" fill="#e4cf90" />
         <path className="bw-mouth" d="M113 176q12 12 25-1" stroke="#062f2d" strokeWidth="3" fill="#fff1d5" />
+        <g className="mj-speaking-mouth"><ellipse cx="125" cy="181" rx="10" ry="7" fill="#062f2d" /><ellipse cx="125" cy="185" rx="5" ry="2" fill="#e99783" /></g>
         <g className="mj-notebook-moustache"><path d="M125 153q-10-8-23 2-12 11-21 2-2 16 16 18 16 2 28-13 12 15 28 13 18-2 16-18-9 9-21-2-13-10-23-2" fill="#202124" /></g>
         <g className="mj-pointer-arm" stroke="#234b43" strokeWidth="2" strokeLinejoin="round"><path d="M197 150q19 8 20-15l15 4q-6 43-35 26" fill="#234b43" stroke="none" /><g className="mj-pointer"><path d="m214 142 18-89q1-5 5-3 2 1 1 5l-18 89z" fill="#b86b2d" stroke="none" /></g><path d="M216 126q-8-1-12 7-4 9 3 17 10 8 18-2 4-5 3-13-1-10-10-9" fill="#efbb91" /><path d="M210 136q7-2 10 3" fill="none" stroke="#c88e68" strokeWidth="1.5" /></g>
         <g className="mj-held-book" stroke="#234b43" strokeWidth="2" strokeLinejoin="round">

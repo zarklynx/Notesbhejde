@@ -24,6 +24,7 @@ test('sends note context and returns the provider answer', async () => {
     assert.equal(url, 'https://api.runware.ai/v1/chat/completions')
     const payload = JSON.parse(options.body)
     assert.equal(payload.model, 'openai:gpt@5-nano')
+    assert.ok(payload.messages.some(m => m.role === 'system' && m.content.includes('Do not force every answer into points')))
     assert.ok(payload.messages.some(m => m.role === 'system' && m.content.includes('deeper reasoning does NOT require a longer visible answer')))
     assert.ok(payload.messages.some(m => m.role === 'system' && m.content.includes('Do not add unsolicited quizzes')))
     assert.ok(payload.messages.some(m => m.role === 'user' && m.content.includes(body.note.content)))

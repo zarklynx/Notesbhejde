@@ -3,6 +3,7 @@ import BookwormAvatar from './BookwormAvatar'
 import './chat.css'
 import { aiFetch } from './aiClient'
 import { chatPlan } from './chatPolicy'
+import { useMasterjiVoice } from './useMasterjiVoice'
 
 export default function MasterjiChat({ note }) {
   const [open, setOpen] = useState(false)
@@ -16,6 +17,8 @@ export default function MasterjiChat({ note }) {
   const usedOcr = useRef(false)
   const input = useRef(null), messageList = useRef(null), latestMessage = useRef(null), controller = useRef(null), reaction = useRef(null), launcher = useRef(null)
   const followReply = useRef(true)
+  const voiceStage = useRef(null)
+  const { voice, play, stop } = useMasterjiVoice(voiceStage)
   useEffect(() => () => { controller.current?.abort(); clearTimeout(reaction.current) }, [])
   useEffect(() => { if (open) input.current?.focus() }, [open])
   useEffect(() => {
@@ -33,6 +36,7 @@ export default function MasterjiChat({ note }) {
   const activity = status.startsWith('Reading scanned') ? 'Reading the page' : status.startsWith('Reading PDF') ? 'Reading PDF' : status.startsWith('Working through') ? 'Working it out' : status.startsWith('Preparing') ? 'Preparing reply' : 'Thinking'
   async function send(text) {
     if (!text.trim() || busy) return
+    stop()
     followReply.current = true
     clearTimeout(reaction.current)
     const next = [...messages, { role: 'user', content: text.trim() }]
@@ -68,16 +72,17 @@ export default function MasterjiChat({ note }) {
     } catch (e) { if (e.name !== 'AbortError') { setError(e.message || 'Connection failed. Please retry.'); setMessages(messages); setDraft(text); setMood('idle') } }
     finally { setBusy(false) }
   }
-  function close() { setOpen(false); requestAnimationFrame(() => launcher.current?.focus()) }
+  function close() { stop(); setOpen(false); requestAnimationFrame(() => launcher.current?.focus()) }
   return <div className={`mj-chat-root ${open ? 'is-open' : ''}`} onClick={e => e.stopPropagation()} onKeyDown={e => { if (e.key === 'Escape' && open) { e.stopPropagation(); close() } }}>
     <section className="mj-chat-panel" role="dialog" aria-label={`Study chat for ${note.topic}`} aria-hidden={!open} inert={!open}>
-      <header>{open && <BookwormAvatar mood={mood} trackCursor={!busy} />}<div><h2 aria-live="polite" aria-atomic="true">{busy ? <>{activity}<span className="mj-activity-dots" aria-hidden="true">...</span></> : 'Ask Masterji'}</h2>{busy && status.startsWith('Reading') && <span>{status.replace(/…$/, '')}</span>}</div><button onClick={close} aria-label="Close study chat">×</button></header>
+      <header ref={voiceStage} className={voice.state === 'playing' ? 'mj-speaking' : ''}>{open && <BookwormAvatar mood={voice.state === 'playing' ? 'speaking' : mood} trackCursor={!busy && voice.state !== 'playing'} />}<div className={voice.state !== 'idle' ? 'mj-speech-board' : ''}>{voice.state !== 'idle' ? <><span className="mj-board-caption">{voice.state === 'loading' ? 'PREPARING VOICE…' : 'LET’S UNDERSTAND'}</span><p className="mj-board-text">{voice.text}</p></> : <h2 aria-live="polite" aria-atomic="true">{busy ? <>{activity}<span className="mj-activity-dots" aria-hidden="true">...</span></> : 'Ask Masterji'}</h2>}{busy && status.startsWith('Reading') && <span>{status.replace(/…$/, '')}</span>}</div><button onClick={close} aria-label="Close study chat">×</button></header>
       <div ref={messageList} className="mj-chat-messages" role="log" aria-live="polite" onScroll={e => {
         const list = e.currentTarget
         followReply.current = list.scrollHeight - list.scrollTop - list.clientHeight < 80
       }}>
         {!messages.length && <div className="mj-chat-welcome"><div className="mj-chat-suggestions">{['Summarize these notes', 'Explain this in simple words', 'Quiz me on these notes'].map(text => <button key={text} onClick={() => send(text)} disabled={busy}>{text} <span>↗</span></button>)}</div></div>}
-        {messages.map((m, i) => <div ref={i === messages.length - 1 ? latestMessage : null} key={i} className={`mj-chat-message mj-chat-${m.role}`}>{m.content}</div>)}
+        {messages.map((m, i) => <div ref={i === messages.length - 1 ? latestMessage : null} key={i} className={`mj-chat-message mj-chat-${m.role}`}>{m.content}{m.role === 'assistant' && <button className="mj-reply-sound" onClick={() => play(i, m.content)} aria-label={voice.index === i ? 'Stop reading reply' : 'Read reply aloud'} aria-pressed={voice.index === i}>{voice.index === i ? '■ Stop' : '▷ Listen'}</button>}</div>)}
+        {voice.error && <p className="mj-chat-error" role="alert">{voice.error}</p>}
         {busy && <div className="mj-chat-wait" role="status"><span>{status}</span></div>}
         {error && <p className="mj-chat-error" role="alert">{error}</p>}
       </div>

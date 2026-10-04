@@ -4,6 +4,7 @@ import { createOcrHandler } from '../server/ocr.js'
 import { createNoteValidator } from '../server/noteValidator.js'
 import { verifyFirebaseToken } from './firebaseAuth.js'
 import { deleteCloudinaryFile, uploadCloudinaryFile } from './cloudinary.js'
+import { googleVoice, chirpChoices } from './voice.js'
 
 export default {
   async fetch(request, env) {
@@ -14,7 +15,7 @@ export default {
     if (allowed) Object.assign(headers, { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' })
     const reply = (status, body) => new Response(JSON.stringify(body), { status, headers })
     if (path === '/health' && request.method === 'GET') return reply(200, { ok: true })
-    if (!['/api/masterji', '/api/masterji/ocr', '/api/validate-note', '/api/notes/upload', '/api/notes/delete'].includes(path)) return reply(404, { error: 'Not found.' })
+    if (!['/api/masterji', '/api/masterji/ocr', '/api/masterji/voice', '/api/validate-note', '/api/notes/upload', '/api/notes/delete'].includes(path)) return reply(404, { error: 'Not found.' })
     if (origin && !allowed) return reply(403, { error: 'Website origin not allowed.' })
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers })
     if (request.method !== 'POST') return reply(405, { error: 'Use POST.' })
@@ -38,6 +39,24 @@ export default {
       return reply(result.status, result.body)
     }
     try {
+      if (path === '/api/masterji/voice') {
+        const chunks = []
+        let size = 0
+        for await (const chunk of request.body) {
+          size += chunk.byteLength
+          if (size > 12000) return reply(413, { error: 'Voice text too long.' })
+          chunks.push(Buffer.from(chunk))
+        }
+        let data
+        try { data = JSON.parse(Buffer.concat(chunks).toString('utf8')) } catch { return reply(400, { error: 'Invalid voice request.' }) }
+        if (typeof data.text !== 'string' || !data.text.trim() || data.text.length > 2000) return reply(400, { error: 'Send 1–2000 characters for voice.' })
+        if (data.voice && !chirpChoices.includes(data.voice)) return reply(400, { error: 'Unknown voice choice.' })
+        if (Buffer.byteLength(data.text, 'utf8') > 4500) return reply(400, { error: 'Voice text too long. Please use a shorter sentence.' })
+        try {
+          const { audio, voice } = await googleVoice(data.text, env, data.voice)
+          return new Response(audio, { headers: { ...headers, 'Content-Type': 'audio/mpeg', 'X-Masterji-Voice': voice } })
+        } catch (error) { return reply(503, { error: error.message }) }
+      }
       // Reuse the same bounded validators and provider handlers as local development.
       const req = {
         method: 'POST', headers: { authorization },

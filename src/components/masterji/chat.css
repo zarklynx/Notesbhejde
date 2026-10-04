@@ -38,6 +38,14 @@
 .mj-chat-panel form button { width: 32px; height: 32px; border-radius: 10px; background: #117a5a; color: white; font-size: 20px; border: none; cursor: pointer; }
 .mj-chat-panel button:disabled { opacity: .4; cursor: default; }
 .mj-chat-disclosure { text-align: center; font-size: 9px; color: #95a399; margin: 8px 0 12px; }
+.mj-reply-sound { display: block; margin-top: 8px; padding: 5px 9px; border: 1px solid #d6e3da; border-radius: 8px; background: white; color: #28654d; font: inherit; font-size: 11px; cursor: pointer; }
+.mj-reply-sound[aria-pressed="true"] { background: #e0eee5; }
+.mj-speech-board { padding: 8px 12px; border: 3px solid #b57948; border-radius: 8px; background: #234b43; color: #fff9e9; box-shadow: 0 3px 0 #d6b48a; animation: mj-board-enter .25s ease-out; }
+.mj-chat-panel header .mj-speech-board span { color: #cce2d5; }
+.mj-chat-panel header .mj-board-caption { font-size: 8px; letter-spacing: 1px; }
+.mj-chat-panel header .mj-board-text { margin: 5px 0 0; white-space: normal; color: #fff9e9; font-size: 12px; line-height: 1.45; max-height: 110px; overflow-y: auto; overflow-wrap: anywhere; }
+@keyframes mj-board-enter { from { opacity: 0; transform: translateY(6px); } }
+@media(prefers-reduced-motion: reduce) { .mj-speech-board { animation: none; } }
 @keyframes mj-chat-arrive { from { opacity: 0; transform: translateX(24px) scale(.96); } }
 @media(max-width: 560px) { .mj-chat-root { right: 14px; bottom: 14px; } .mj-chat-panel { width: calc(100vw - 28px); height: min(530px,calc(100dvh - 28px)); } }
 @media(prefers-reduced-motion: reduce) { .mj-chat-panel { animation: none; transition: none; transform: none; } }

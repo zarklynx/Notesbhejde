@@ -193,3 +193,7 @@
 .mj-preview button:focus-visible, .mj-back:focus-visible { outline: 3px solid #d6ac4c; outline-offset: 4px; }
 @media (max-width: 500px) { .mj-preview { padding: 22px 18px 125px; } .mj-preview-content { margin-top: 40px; } .mj-character-stage { width: 260px; } .mj-stage-scribble { right: 0; } .mj-stage-caption { white-space: normal; } }
 @media (prefers-reduced-motion: reduce) { .masterji-avatar *, .mj-greeting { animation: none !important; transition: none !important; } .masterji-thinking .mj-thought, .masterji-happy .mj-spark { opacity: 1; } }
+.mj-speaking-mouth { display: none; transform-box: fill-box; transform-origin: center; }
+.bookworm-speaking .bw-mouth { opacity: 0; }
+.bookworm-speaking .mj-speaking-mouth { display: block; transform: scaleY(calc(.12 + var(--speech-open, 0) * 1.7)); }
+.bookworm-speaking .mj-pointer-arm { transform: rotate(38deg); }
