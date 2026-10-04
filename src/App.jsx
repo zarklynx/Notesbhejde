@@ -1,44 +1,33 @@
 import { useState } from "react";
+import { Routes, Route } from "react-router-dom";
+import { getNotes, deleteNote, CURRENT_USER } from "./api";
 import Dashboard from "./dashboard";
-import Login from "./components/Login";
-import Register from "./components/Register";
 import Profile from "./components/Profile";
-import MasterjiPreview from "./components/masterji/MasterjiPreview";
-import MasterjiMotionPreview from "./components/masterji/MasterjiMotionPreview";
+import MyNotes from "./components/Mynotes";
+import NoteView from "./components/notesCard";
 
 function App() {
-  const [page, setPage] = useState("login");
+  const [notes, setNotes] = useState(() => getNotes());
 
-  // Masterji preview mode
-  const searchParams = new URLSearchParams(window.location.search);
+  const addNote = (note) => setNotes((prev) => [note, ...prev]);
 
-  if (searchParams.has("masterji-preview")) {
-    return searchParams.has("gallery") ? (
-      <MasterjiPreview />
-    ) : (
-      <MasterjiMotionPreview />
-    );
-  }
+  const handleDelete = (id) => {
+    deleteNote(id);
+    setNotes((prev) => prev.filter((n) => n.id !== id));
+  };
 
-  // Authentication pages
-  if (page === "login") {
-    return (
-      <Login
-        onRegister={() => setPage("register")}
-        onLoginSuccess={() => setPage("dashboard")}
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard notes={notes} onAdd={addNote} />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route
+        path="/my-notes"
+        element={<MyNotes notes={notes.filter((n) => n.owner === CURRENT_USER)} onDelete={handleDelete} />}
       />
-    );
-  }
-
-  if (page === "register") {
-    return <Register onLogin={() => setPage("login")} />;
-  }
-
-  if (page === "profile") {
-    return <Profile />;
-  }
-
-  return <Dashboard />;
+      <Route path="/notes/:id" element={<NoteView notes={notes} />} />
+      <Route path="*" element={<p>Page not found</p>} />
+    </Routes>
+  );
 }
 
 export default App;

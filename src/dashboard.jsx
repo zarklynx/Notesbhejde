@@ -1,10 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import "./dash.css";
+import { useNavigate, Link } from "react-router-dom";
 import AddNotes from "./components/addnotes";
-import MyNotes from "./components/Mynotes";
-import NoteView from "./components/notesCard";
-import Profile from "./components/Profile";
-import { getNotes, deleteNote, CURRENT_USER } from "./api";
 import {
   FaBell, FaUserCircle, FaChevronDown, FaPaperPlane,
   FaStar, FaRegBookmark, FaRegHeart, FaRegComment,
@@ -23,18 +20,15 @@ const categories = [
   ["Other", 5],
 ];
 
-function Dashboard() {
-  const [notes, setNotes] = useState(() => getNotes());
+function Dashboard({ notes, onAdd }) {
+  const navigate = useNavigate();
   const [catOpen, setCatOpen] = useState(false);
   const [activeCat, setActiveCat] = useState("All Notes");
   const [unread] = useState(3);
   const [search, setSearch] = useState("");
   const [showAdd, setShowAdd] = useState(false);
-  const [showMyNotes, setShowMyNotes] = useState(false);
-  const [selected, setSelected] = useState(null);
 
   const query = search.trim().toLowerCase();
-  const [showProfile, setShowProfile] = useState(false);
 
   // ---- chat ----
   const [messages, setMessages] = useState([]);
@@ -66,24 +60,6 @@ function Dashboard() {
     [n.topic, n.name, n.info, ...n.tags].join(" ").toLowerCase().includes(query)
   );
 
-  // only the notes owned by the logged in user
-  const myNotes = notes.filter((n) => n.owner === CURRENT_USER);
-
-  const addNote = (note) => {
-    setNotes((prev) => [note, ...prev]); // new note goes first
-    setShowAdd(false);
-  };
-
-  const handleDelete = (id) => {
-    deleteNote(id);
-    setNotes((prev) => prev.filter((n) => n.id !== id));
-  };
-
-  const handleViewFromMyNotes = (note) => {
-    setShowMyNotes(false);
-    setSelected(note);
-  };
-
   return (
     <div className="dash">
       {/* navbar */}
@@ -108,7 +84,7 @@ function Dashboard() {
           <button
   className="profileBtn"
   aria-label="Profile"
-  onClick={() => setShowProfile(true)}
+  onClick={() => navigate("/profile")}
 >
   <FaUserCircle />
 </button>
@@ -119,7 +95,7 @@ function Dashboard() {
       <div className="leftSidebar">
         <div className="Section1">
           <ul>
-            <li onClick={() => setShowMyNotes(true)}>My Notes</li>
+            <li onClick={() => navigate("/my-notes")}>My Notes</li>
             <li onClick={() => setShowAdd(true)}>Add Notes</li>
             <li>Saved</li>
             <li>Favourites</li>
@@ -171,7 +147,7 @@ function Dashboard() {
             )}
 
             {filteredNotes.map((n) => (
-              <div className="card" key={n.id} onClick={() => setSelected(n)}>
+              <div className="card" key={n.id} onClick={() => navigate(`/notes/${n.id}`)}>
                 <div className="part1">
                   <div className="userRow">
                     <span className="userProfile">{n.name[0]}</span>
@@ -240,8 +216,8 @@ function Dashboard() {
         </div>
 
         <div className="footer-links">
-          <a href="/">Home</a>
-          <a href="/notes">My Notes</a>
+          <Link to="/">Home</Link>
+          <Link to="/my-notes">My Notes</Link>
           <a href="/groups">Study Groups</a>
           <a href="/help">Help</a>
           <a href="/contact">Contact</a>
@@ -259,23 +235,14 @@ function Dashboard() {
 
       {/* popups */}
       {showAdd && (
-        <AddNotes onClose={() => setShowAdd(false)} onAdd={addNote} />
-      )}
-
-      {showMyNotes && (
-        <MyNotes
-          notes={myNotes}
-          onDelete={handleDelete}
-          onView={handleViewFromMyNotes}
-          onClose={() => setShowMyNotes(false)}
+        <AddNotes
+          onClose={() => setShowAdd(false)}
+          onAdd={(note) => {
+            onAdd(note);
+            setShowAdd(false);
+          }}
         />
       )}
-
-      {selected && (
-        <NoteView note={selected} onClose={() => setSelected(null)} />
-      )}
-
-      {showProfile && <Profile onClose={() => setShowProfile(false)} />}
 
     </div>
   );

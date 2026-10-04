@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./mynotes.css";
 
 const formatDate = (iso) =>
@@ -8,7 +9,9 @@ const formatDate = (iso) =>
     year: "numeric",
   });
 
-function MyNotes({ notes, onDelete, onView, onClose }) {
+function MyNotes({ notes, onDelete }) {
+  const navigate = useNavigate();
+
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this note?")) {
       onDelete(id);
@@ -31,7 +34,7 @@ function MyNotes({ notes, onDelete, onView, onClose }) {
 
             <button
               className="close-notes"
-              onClick={onClose}
+              onClick={() => navigate("/")}
               aria-label="Close"
             >
               ✕
@@ -83,7 +86,10 @@ function MyNotes({ notes, onDelete, onView, onClose }) {
                 <div className="note-footer">
                   <span>Created: {formatDate(note.createdAt)}</span>
 
-                  <button className="view-btn" onClick={() => onView(note)}>
+                  <button
+                    className="view-btn"
+                    onClick={() => navigate(`/notes/${note.id}`)}
+                  >
                     View
                   </button>
                 </div>

@@ -1,8 +1,10 @@
 import "./Profile.css";
+import { useNavigate } from "react-router-dom";
 
 function Profile({ onClose }) {
   // Temporary frontend data.
   // Later, backend data can be passed here.
+    const navigate = useNavigate();
   const user = {
     name: "Student Name",
     username: "@student",
@@ -49,13 +51,7 @@ function Profile({ onClose }) {
   return (
     <div className="profile-overlay">
 
-      <button
-        className="profile-close"
-        onClick={onClose}
-        aria-label="Close profile"
-      >
-        ✕
-      </button>
+      <button className="profile-close" onClick={() => navigate("/")} aria-label="Close profile">✕</button>
 
       <div className="profile-page">
 

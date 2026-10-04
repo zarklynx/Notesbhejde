@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 import {
   FaStar, FaRegBookmark, FaRegHeart, FaRegComment, FaDownload,
 } from "react-icons/fa";
 import "./NotesCss.css";
 import MasterjiChat from './masterji/MasterjiChat'
 
-function NoteView({ note, onClose }) {
+function NoteDetail({ note, onClose }) {
   const tags = note.tags || [];
   const images = note.images || [];
   const fileName = note.fileName || (note.file ? note.file.split("/").pop() : "");
@@ -132,6 +133,31 @@ function NoteView({ note, onClose }) {
     </div>,
     document.body
   );
+}
+
+// the page for /notes/:id  (finds the note from the link)
+function NoteView({ notes }) {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const note = notes.find((n) => String(n.id) === id);
+
+  // opened straight from a link -> go to the dashboard, otherwise go back
+  const onClose = useCallback(() => {
+    if (location.key === "default") navigate("/");
+    else navigate(-1);
+  }, [navigate, location.key]);
+
+  if (!note) {
+    return (
+      <p>
+        Note not found. <Link to="/">Back to dashboard</Link>
+      </p>
+    );
+  }
+
+  return <NoteDetail note={note} onClose={onClose} />;
 }
 
 export default NoteView;
