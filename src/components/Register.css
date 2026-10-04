@@ -8,7 +8,7 @@
 }
 
 .auth-card {
-  width: 420px;
+  width: min(420px, 100%);
   background: white;
   padding: 35px 40px;
   border-radius: 20px;
@@ -23,11 +23,13 @@
 }
 
 .auth-logo span {
-  color: #193f2d;
+  color: #000;
 }
 
 .auth-logo b {
   color: #42a86b;
+  font-size: .76em;
+  text-transform: lowercase;
 }
 
 .auth-card h1 {

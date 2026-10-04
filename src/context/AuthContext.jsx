@@ -3,6 +3,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth, isFirebaseConfigured } from "../lib/firebase";
 import {
   loginUser,
+  loginWithGoogle,
   logoutUser,
   registerUser,
   resetPassword,
@@ -27,6 +28,7 @@ export function AuthProvider({ children }) {
     loading,
     configured: isFirebaseConfigured,
     login: loginUser,
+    googleLogin: loginWithGoogle,
     register: registerUser,
     logout: logoutUser,
     resetPassword,

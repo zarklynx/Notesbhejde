@@ -1,11 +1,12 @@
-import { useState } from "react";
-import Dashboard from "./dashboard";
+import { lazy, Suspense, useState } from "react";
+const Dashboard = lazy(() => import('./dashboard'));
 import Login from "./components/Login";
-import Register from "./components/Register";
-import Profile from "./components/Profile";
-import MasterjiPreview from "./components/masterji/MasterjiPreview";
-import MasterjiMotionPreview from "./components/masterji/MasterjiMotionPreview";
+const Register = lazy(() => import('./components/Register'));
+const Profile = lazy(() => import('./components/Profile'));
+const MasterjiPreview = lazy(() => import('./components/masterji/MasterjiPreview'));
+const MasterjiMotionPreview = lazy(() => import('./components/masterji/MasterjiMotionPreview'));
 import { useAuth } from "./context/AuthContext";
+import LoadingState from './components/LoadingState';
 
 function App() {
   const { user, loading, configured } = useAuth();
@@ -22,14 +23,14 @@ function App() {
     );
   }
 
-  if (loading) return <div>Loading your account...</div>;
+  if (loading) return <LoadingState fullPage label="Opening your study space" />;
 
   if (!configured) {
     return <div>Firebase is not configured. Add the VITE_FIREBASE_* values to .env.local.</div>;
   }
 
   // Authentication pages
-  if (!user && page === "login") {
+  if (!user && page !== "register") {
     return (
       <Login
         onRegister={() => setPage("register")}
@@ -49,4 +50,6 @@ function App() {
   return <Dashboard />;
 }
 
-export default App;
+export default function AppWithLoading() {
+  return <Suspense fallback={<LoadingState fullPage label="Opening your study space" skeleton />}><App /></Suspense>;
+}

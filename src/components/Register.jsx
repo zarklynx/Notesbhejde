@@ -1,6 +1,8 @@
+import LoadingState from './LoadingState'
 import { useState } from "react";
 import "./Register.css";
 import { useAuth } from "../context/AuthContext";
+import GoogleSignInButton from './GoogleSignInButton';
 
 function Register({ onLogin }) {
   const [name, setName] = useState("");
@@ -38,7 +40,7 @@ function Register({ onLogin }) {
       <div className="auth-card">
 
         <div className="auth-logo">
-          <span>NOTES</span><b>bhejde</b>
+          <span>Notes</span><b>bhejde</b>
         </div>
 
         <h1>Create Account</h1>
@@ -47,6 +49,7 @@ function Register({ onLogin }) {
           Join NotesBhejde and start sharing knowledge.
         </p>
 
+        <GoogleSignInButton disabled={loading} onBusyChange={setLoading} onError={setError} onSuccess={onLogin} />
         <form onSubmit={handleRegister}>
 
           <label>Full Name</label>
@@ -97,7 +100,7 @@ function Register({ onLogin }) {
           {error && <p role="alert">{error}</p>}
 
           <button type="submit" className="auth-button" disabled={loading}>
-            {loading ? "Creating Account..." : "Create Account"}
+            {loading ? <LoadingState compact label="Creating your account" /> : "Create Account"}
           </button>
 
         </form>

@@ -3,6 +3,9 @@
 .mj-final-design .mj-motion-stage { height: 330px; }
 .mj-final-design .mj-motion-stage > .bookworm-avatar { width: 285px; }
 .mj-notebook-character { transform-origin: 120px 228px; animation: mj-notebook-idle 4.5s ease-in-out infinite; }
+.bookworm-no .mj-notebook-character { animation:mj-gentle-no .8s ease-in-out 2; }
+.bookworm-no .mj-pointer-arm { transform:rotate(-16deg); }
+@keyframes mj-gentle-no { 0%,100% {transform:translateX(0) rotate(0);} 25% {transform:translateX(-4px) rotate(-4deg);} 75% {transform:translateX(4px) rotate(4deg);} }
 .mj-notebook-eyes { transform-origin: 124px 123px; animation: mj-blink 6s infinite; }
 .mj-notebook-moustache { transform-origin: 124px 165px; }
 .mj-pointer-arm { transform-origin: 196px 156px; transition: transform .5s ease; }

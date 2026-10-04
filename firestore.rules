@@ -30,10 +30,15 @@ service cloud.firestore {
       allow delete: if ownsExisting() && resource.data.isDemo == false;
 
       match /comments/{commentId} {
-        allow read: if signedIn();
+        allow read: if signedIn() && get(/databases/$(database)/documents/notes/$(noteId)).data.visibility == 'public';
         allow create: if signedIn()
-          && request.resource.data.authorId == request.auth.uid;
-        allow update, delete: if signedIn()
+          && get(/databases/$(database)/documents/notes/$(noteId)).data.visibility == 'public'
+          && request.resource.data.keys().hasOnly(['text', 'authorId', 'authorName', 'createdAt'])
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000
+          && request.resource.data.createdAt == request.time;
+        allow delete: if signedIn()
           && resource.data.authorId == request.auth.uid;
       }
     }
@@ -44,6 +49,59 @@ service cloud.firestore {
 
     match /users/{userId}/favourites/{noteId} {
       allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+    match /users/{userId}/folders/{folderId} {
+      allow read, delete: if signedIn() && request.auth.uid == userId;
+      allow create, update: if signedIn() && request.auth.uid == userId
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 60;
+    }
+    match /users/{userId}/recentNotes/{noteId} {
+      allow read, write: if signedIn() && request.auth.uid == userId;
+    }
+    match /publicProfiles/{userId} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && request.auth.uid == userId
+        && request.resource.data.keys().hasOnly(['displayName', 'bio', 'course', 'updatedAt'])
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 100
+        && request.resource.data.bio is string && request.resource.data.bio.size() <= 500
+        && request.resource.data.course is string && request.resource.data.course.size() <= 100;
+      allow delete: if signedIn() && request.auth.uid == userId;
+    }
+    match /publicChat/{messageId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['text', 'authorId', 'authorName', 'createdAt'])
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.authorName is string
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000
+        && request.resource.data.createdAt == request.time;
+      allow delete: if signedIn() && resource.data.authorId == request.auth.uid;
+    }
+    match /chatRooms/{roomId} {
+      allow read: if signedIn();
+      allow create: if signedIn()
+        && roomId != 'default'
+        && request.resource.data.keys().hasOnly(['name', 'ownerId', 'createdAt'])
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 60
+        && request.resource.data.createdAt == request.time;
+      match /messages/{messageId} {
+        allow read: if signedIn() && exists(/databases/$(database)/documents/chatRooms/$(roomId));
+        allow create: if signedIn()
+          && exists(/databases/$(database)/documents/chatRooms/$(roomId))
+          && request.resource.data.keys().hasOnly(['text', 'authorId', 'authorName', 'createdAt'])
+          && request.resource.data.authorId == request.auth.uid
+          && request.resource.data.authorName is string
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 2000
+          && request.resource.data.createdAt == request.time;
+        allow delete: if signedIn() && resource.data.authorId == request.auth.uid;
+      }
     }
   }
 }

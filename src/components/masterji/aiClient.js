@@ -8,7 +8,8 @@ export async function aiFetch(path, options = {}) {
   const headers = new Headers(options.headers)
   headers.set('Authorization', `Bearer ${await auth.currentUser.getIdToken()}`)
   // Keep Aditya's file services on the Worker with his Cloudinary configuration.
-  const server = path === '/api/notes/upload' || path === '/api/notes/delete'
-    ? 'https://notesbhejde-masterji.notesbhejde.workers.dev' : aiServer
+  // Our Worker forwards file requests to Aditya's configured service, so hosted
+  // clients only need one CORS-enabled endpoint; Cloudinary secrets stay there.
+  const server = aiServer
   return fetch(`${server}${path}`, { ...options, headers })
 }

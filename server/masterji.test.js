@@ -2,7 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 import { Readable } from 'node:stream'
 import { createMasterjiHandler } from './masterji.js'
-import { chatPlan } from '../src/components/masterji/chatPolicy.js'
+import { chatPlan, requestedLanguage } from '../src/components/masterji/chatPolicy.js'
 
 async function call(options, body, headers = {}) {
   const req = Readable.from([JSON.stringify(body)])
@@ -12,6 +12,19 @@ async function call(options, body, headers = {}) {
   return { status, result }
 }
 const body = { note: { title: 'Sample', content: 'Cloud computing is on demand.' }, messages: [{ role: 'user', content: 'Summarize these notes' }] }
+test('Marathi is selected immediately and persists on follow-up',async()=>{
+ assert.equal(requestedLanguage('Explain this in Marathi'),'Marathi')
+ assert.equal(requestedLanguage('marathi madhe sang'),'Marathi')
+ assert.equal(requestedLanguage('मराठीत समजावून सांगा'),'Marathi')
+ const fetchImpl=async(_,options)=>{assert.ok(JSON.parse(options.body).messages.some(m=>m.role==='system' && m.content.includes('Language for this reply: Marathi')));return {ok:true,json:async()=>({choices:[{message:{content:'ही अभ्यासाची संकल्पना आहे.'}}]})}}
+ await call({apiKey:'test',fetchImpl},{...body,messages:[{role:'user',content:'Explain in Marathi'}]})
+ await call({apiKey:'test',fetchImpl},{...body,messages:[{role:'user',content:'Explain in Marathi'},{role:'assistant',content:'मराठी उत्तर'},{role:'user',content:'Make it shorter'}]})
+})
+test('off-topic gaming redirects but academic game examples remain allowed',async()=>{
+ const response=await call({apiKey:'test',fetchImpl:()=>{throw new Error('Must not use model')}},{...body,messages:[{role:'user',content:'what is freefire'}]})
+ assert.equal(response.result.mode,'off-topic');assert.match(response.result.answer,/study companion/)
+ assert.equal(chatPlan('Analyze Free Fire network design').reply,undefined)
+})
 test('returns a clear error without a server key', async () => {
   assert.equal((await call({}, body)).status, 503)
 })

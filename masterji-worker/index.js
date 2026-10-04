@@ -5,6 +5,7 @@ import { createNoteValidator } from '../server/noteValidator.js'
 import { verifyFirebaseToken } from './firebaseAuth.js'
 import { deleteCloudinaryFile, uploadCloudinaryFile } from './cloudinary.js'
 import { googleVoice, chirpChoices } from './voice.js'
+import { community } from './community.js'
 
 export default {
   async fetch(request, env) {
@@ -15,7 +16,7 @@ export default {
     if (allowed) Object.assign(headers, { 'Access-Control-Allow-Origin': origin, 'Access-Control-Allow-Methods': 'POST, OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' })
     const reply = (status, body) => new Response(JSON.stringify(body), { status, headers })
     if (path === '/health' && request.method === 'GET') return reply(200, { ok: true })
-    if (!['/api/masterji', '/api/masterji/ocr', '/api/masterji/voice', '/api/validate-note', '/api/notes/upload', '/api/notes/delete'].includes(path)) return reply(404, { error: 'Not found.' })
+    if (!['/api/community', '/api/masterji', '/api/masterji/ocr', '/api/masterji/voice', '/api/validate-note', '/api/notes/upload', '/api/notes/delete'].includes(path)) return reply(404, { error: 'Not found.' })
     if (origin && !allowed) return reply(403, { error: 'Website origin not allowed.' })
     if (request.method === 'OPTIONS') return new Response(null, { status: 204, headers })
     if (request.method !== 'POST') return reply(405, { error: 'Use POST.' })
@@ -27,14 +28,26 @@ export default {
     } catch {
       return reply(401, { error: 'Please sign in before using Masterji.' })
     }
+    if(path === '/api/community') {
+      const result = await community(request,env,user)
+      return reply(result.status,result.body)
+    }
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown'
     const limited = await env.AI_LIMIT.limit({ key: `${user.sub}:${ip}` })
     if (!limited.success) return reply(429, { error: 'Too many requests. Try again in a minute.' })
     if (path === '/api/notes/upload') {
+      if(!env.CLOUDINARY_API_SECRET) {
+        const upstream = await fetch('https://notesbhejde-masterji.notesbhejde.workers.dev/api/notes/upload', {method:'POST',headers:{Authorization:authorization,'Content-Type':request.headers.get('Content-Type') || 'application/octet-stream'},body:request.body})
+        return new Response(upstream.body,{status:upstream.status,headers})
+      }
       const result = await uploadCloudinaryFile(request, env, user)
       return reply(result.status, result.body)
     }
     if (path === '/api/notes/delete') {
+      if(!env.CLOUDINARY_API_SECRET) {
+        const upstream = await fetch('https://notesbhejde-masterji.notesbhejde.workers.dev/api/notes/delete', {method:'POST',headers:{Authorization:authorization,'Content-Type':'application/json'},body:request.body})
+        return new Response(upstream.body,{status:upstream.status,headers})
+      }
       const result = await deleteCloudinaryFile(request, env, user)
       return reply(result.status, result.body)
     }

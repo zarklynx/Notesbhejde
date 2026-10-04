@@ -40,9 +40,9 @@ export default function MasterjiChat({ note }) {
     followReply.current = true
     clearTimeout(reaction.current)
     const next = [...messages, { role: 'user', content: text.trim() }]
-    const plan = chatPlan(text)
+    const plan = chatPlan(text,content)
     if (plan.reply) {
-      setMessages([...next, { role: 'assistant', content: plan.reply }]); setDraft(''); setError(''); setMood('happy')
+      setMessages([...next, { role: 'assistant', content: plan.reply }]); setDraft(''); setError(''); setMood(plan.mode==='off-topic'?'no':'happy')
       reaction.current = setTimeout(() => setMood('idle'), 1800)
       return
     }
@@ -67,7 +67,7 @@ export default function MasterjiChat({ note }) {
       const response = await aiFetch('/api/masterji', { method: 'POST', headers: { 'Content-Type': 'application/json' }, signal: controller.current.signal, body: JSON.stringify({ note: { id: note.id, title: note.topic, content: source }, messages: next.slice(-11), preferFast: usedOcr.current }) })
       const data = await response.json()
       if (!response.ok) throw new Error(data.error || 'Could not get an answer.')
-      setMessages([...next, { role: 'assistant', content: data.answer }]); setMood('happy')
+      setMessages([...next, { role: 'assistant', content: data.answer }]); setMood(data.mode==='off-topic'?'no':'happy')
       reaction.current = setTimeout(() => setMood('idle'), 1800)
     } catch (e) { if (e.name !== 'AbortError') { setError(e.message || 'Connection failed. Please retry.'); setMessages(messages); setDraft(text); setMood('idle') } }
     finally { setBusy(false) }

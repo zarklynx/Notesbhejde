@@ -1,21 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import {
-  FaStar, FaRegBookmark, FaRegHeart, FaRegComment, FaDownload,
+  FaRegBookmark, FaRegHeart, FaHeart, FaRegComment, FaDownload,
 } from "react-icons/fa";
 import "./NotesCss.css";
 import MasterjiChat from './masterji/MasterjiChat'
+import NoteComments from './NoteComments'
+import NoteRating from './NoteRating'
+import { watchStats, watchItems } from '../services/community'
 
-function NoteView({ note, onClose }) {
+function NoteView({ note, onClose, onProfile, onSave, onFavourite, saved, favourite }) {
   const tags = note.tags || [];
   const images = note.images || [];
   const fileName = note.fileName || (note.file ? note.file.split("/").pop() : "");
+  const [stats,setStats] = useState([]), [comments,setComments] = useState([]);
+  useEffect(()=>watchStats(setStats),[]);
+  useEffect(()=>watchItems(`notes/${note.id}/comments`,setComments),[note.id]);
+  const stat = stats.find(s=>s.id===note.id);
 
   // only PDFs can be previewed in an iframe (docx/pptx cannot)
   const isPdf =
     !!note.file &&
     (note.file.startsWith("data:application/pdf") ||
-      note.file.toLowerCase().endsWith(".pdf"));
+      /\.pdf(?:[?#]|$)/i.test(note.file) || /\.pdf$/i.test(note.fileName || ''));
 
   // uploaded files are data URLs; browsers preview PDFs more reliably as blob URLs
   const [viewerSrc, setViewerSrc] = useState(null);
@@ -68,11 +75,11 @@ function NoteView({ note, onClose }) {
 
         <div className="nv-header">
           <div className="nv-user">
-            <span className="nv-avatar">{note.name?.[0]}</span>
+            <button className="nv-avatar" onClick={() => onProfile?.(note.ownerId,note.ownerName)}>{(note.ownerName || 'S')[0]}</button>
             <div>
               <h2 className="nv-title">{note.topic}</h2>
               <p className="nv-by">
-                by {note.name} · {note.subject}
+                by {note.ownerName || 'Student'} · {note.subject}
               </p>
             </div>
           </div>
@@ -118,13 +125,15 @@ function NoteView({ note, onClose }) {
               Preview isn't available for this file type. Use Download to open it.
             </p>
           )}
+          <NoteRating key={`rating-${note.id}`} noteId={note.id} ownerId={note.ownerId} />
+          <NoteComments key={note.id} noteId={note.id} onProfile={onProfile} />
         </div>
 
         <div className="nv-stats">
-          <span><FaStar /> {note.review}</span>
-          <span><FaRegBookmark /> {note.saved}</span>
-          <span><FaRegHeart /> {note.fav}</span>
-          <span><FaRegComment /> {note.comment}</span>
+          <span>{stat?.views || 0} views</span>
+          <button onClick={onSave} aria-pressed={saved}><FaRegBookmark /> {saved ? 'Saved' : 'Save'}</button>
+          <button className="favourite-action" onClick={onFavourite} aria-pressed={favourite}>{favourite ? <FaHeart key="liked" className="liked-icon" /> : <FaRegHeart key="unliked" />} {stat?.favourites || 0} {favourite ? 'Liked' : 'Like'}</button>
+          <span><FaRegComment /> {comments.length}</span>
         </div>
 
       </div>

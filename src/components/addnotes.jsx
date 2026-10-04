@@ -1,3 +1,4 @@
+import LoadingState from './LoadingState'
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { createNote, validateNote } from "../api";
@@ -175,7 +176,7 @@ function AddNotes({ onClose, onAdd }) {
           <div className="an-actions">
             <button type="button" className="an-cancel" onClick={onClose}>Cancel</button>
             <button type="button" className="an-add" onClick={handleSubmit} disabled={loading}>
-              {loading ? (validation ? "Adding..." : "Checking...") : validation ? "Publish Note" : "Validate Content"}
+              {loading ? <LoadingState compact label={validation ? "Publishing note" : "Checking content"} /> : validation ? "Publish Note" : "Validate Content"}
             </button>
           </div>
         </div>

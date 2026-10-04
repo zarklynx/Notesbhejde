@@ -8,7 +8,7 @@ import {
   serverTimestamp,
   setDoc,
   where,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { auth, db } from "../lib/firebase";
 import { aiFetch } from "../components/masterji/aiClient";
 

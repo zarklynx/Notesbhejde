@@ -49,3 +49,4 @@
 @keyframes mj-chat-arrive { from { opacity: 0; transform: translateX(24px) scale(.96); } }
 @media(max-width: 560px) { .mj-chat-root { right: 14px; bottom: 14px; } .mj-chat-panel { width: calc(100vw - 28px); height: min(530px,calc(100dvh - 28px)); } }
 @media(prefers-reduced-motion: reduce) { .mj-chat-panel { animation: none; transition: none; transform: none; } }
+@media(max-width:560px) { .mj-chat-panel input { font-size:16px; } }

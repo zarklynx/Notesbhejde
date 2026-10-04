@@ -50,6 +50,7 @@
 }
 
 .nv-title {
+  overflow-wrap:anywhere;
   margin: 0;
   font-size: 1.3rem;
 }
@@ -172,6 +173,7 @@
 }
 
 .nv-stats {
+  flex-wrap:wrap;
   display: flex;
   gap: 1.5rem;
   padding-top: 0.25rem;
@@ -185,6 +187,11 @@
 }
 
 @media (max-width: 600px) {
+  .nv-header { align-items:flex-start; }
+  .nv-title { font-size:1rem; }
+  .nv-actions { gap:6px; }
+  .nv-download { padding:8px; font-size:12px; }
+  .nv-stats { gap:12px; }
   .nv-panel {
     padding: 0.75rem 1rem;
   }
@@ -192,3 +199,4 @@
     height: 60vh;
   }
 }
+.note-rating{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:20px 0;margin-top:20px;border-top:1px solid #e2ece5;color:#254c3b}.note-rating small{display:block;color:#6b7c72;font-size:12px;margin-top:5px}.note-rating button{font-size:26px;background:transparent;border:0;color:#b98620;cursor:pointer;padding:3px}.note-rating button:disabled{opacity:.4;cursor:default}.note-rating p{width:100%;color:#a33737}
