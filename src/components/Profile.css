@@ -197,6 +197,30 @@
 }
 
 
+.profile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  overflow-y: auto;
+  background: #f6fafd;
+}
+
+.profile-close {
+  position: fixed;
+  top: 1rem;
+  right: 1.25rem;
+  z-index: 1;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: #fcfdfd;
+  border: 0.0625rem solid #e9f0f5;
+  color: #436c87;
+  cursor: pointer;
+}
+
+.profile-close:hover { background: #e6f4ed; color: #117a5a; }
+
 /* Responsive */
 
 @media (max-width: 800px) {

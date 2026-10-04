@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./dash.css";
 import AddNotes from "./components/addnotes";
 import MyNotes from "./components/Mynotes";
 import NoteView from "./components/notesCard";
+import Profile from "./components/Profile";
 import { getNotes, deleteNote, CURRENT_USER } from "./api";
 import {
   FaBell, FaUserCircle, FaChevronDown, FaPaperPlane,
@@ -33,6 +34,33 @@ function Dashboard() {
   const [selected, setSelected] = useState(null);
 
   const query = search.trim().toLowerCase();
+  const [showProfile, setShowProfile] = useState(false);
+
+  // ---- chat ----
+  const [messages, setMessages] = useState([]);
+  const [text, setText] = useState("");
+  const chatEndRef = useRef(null);
+
+  // scroll to the newest message
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  const sendMessage = (e) => {
+    e.preventDefault(); // stops the page from reloading
+    const msg = text.trim();
+    if (!msg) return; // ignore empty messages
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now(),
+        text: msg,
+        time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      },
+    ]);
+    setText("");
+  };
 
   const filteredNotes = notes.filter((n) =>
     [n.topic, n.name, n.info, ...n.tags].join(" ").toLowerCase().includes(query)
@@ -77,10 +105,13 @@ function Dashboard() {
             <FaBell />
             {unread > 0 && <span className="dot"></span>}
           </button>
-          <button className="profileBtn" aria-label="Profile">
-            <FaUserCircle />
-            <span>Profile</span>
-          </button>
+          <button
+  className="profileBtn"
+  aria-label="Profile"
+  onClick={() => setShowProfile(true)}
+>
+  <FaUserCircle />
+</button>
         </div>
       </div>
 
@@ -172,13 +203,33 @@ function Dashboard() {
       <div className="RightSidebar">
         <div className="chatSystem">
           <div className="nav">Ask Questions</div>
-          <div className="chatScreen"></div>
-          <div className="foot">
-            <input type="text" placeholder="type....." />
-            <button aria-label="Send">
+
+          <div className="chatScreen">
+            {messages.length === 0 && (
+              <p className="chatEmpty">No messages yet. Ask your first question!</p>
+            )}
+
+            {messages.map((m) => (
+              <div className="msg me" key={m.id}>
+                <p>{m.text}</p>
+                <span>{m.time}</span>
+              </div>
+            ))}
+
+            <div ref={chatEndRef} />
+          </div>
+
+          <form className="foot" onSubmit={sendMessage}>
+            <input
+              type="text"
+              placeholder="type....."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <button type="submit" aria-label="Send">
               <FaPaperPlane />
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -223,6 +274,8 @@ function Dashboard() {
       {selected && (
         <NoteView note={selected} onClose={() => setSelected(null)} />
       )}
+
+      {showProfile && <Profile onClose={() => setShowProfile(false)} />}
 
     </div>
   );
